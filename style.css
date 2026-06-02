@@ -98,9 +98,13 @@ section h2{
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.card h3{
+    margin-top:0;
 }
 
 .card{
