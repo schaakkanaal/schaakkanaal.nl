@@ -155,11 +155,24 @@ function onDrop(source, target) {
         promotion: 'q'
     });
 
-    if (move === null) {
-        return 'snapback';
-    }
+if (move === null) {
+    return 'snapback';
+}
 
-    console.log(game.fen());
+window.setTimeout(function() {
+
+    var possibleMoves = game.moves();
+
+    if (possibleMoves.length === 0) return;
+
+    var randomMove =
+        possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+    game.move(randomMove);
+
+    board.position(game.fen());
+
+}, 500);
 }
 
 var board = Chessboard('board', {
