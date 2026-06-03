@@ -184,24 +184,32 @@ if (openingBook[fen]) {
 
     var moves = openingBook[fen];
 
-    var bestMove = null;
-    var bestCount = 0;
+    var totalWeight = 0;
 
-    for (var move in moves) {
+for (var move in moves) {
+    totalWeight += moves[move];
+}
 
-        if (moves[move] > bestCount) {
-            bestCount = moves[move];
-            bestMove = move;
-        }
+var random = Math.random() * totalWeight;
+
+var runningTotal = 0;
+
+for (var move in moves) {
+
+    runningTotal += moves[move];
+
+    if (random <= runningTotal) {
+
+        chosenMove = move;
+        break;
+
     }
+}
 
-    chosenMove = bestMove;
-
-    console.log(
-        "DimitriBot boekzet:",
-        chosenMove,
-        "(" + bestCount + " keer)"
-    );
+console.log(
+    "DimitriBot boekzet:",
+    chosenMove
+);
 
 } else {
 
