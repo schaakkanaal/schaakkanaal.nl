@@ -147,6 +147,15 @@ Nieuwe partij
 
 var game = new Chess();
 
+let openingBook = {};
+
+fetch("openingbook.json")
+  .then(response => response.json())
+  .then(data => {
+      openingBook = data;
+      console.log("Openingboek geladen!");
+  });
+    
 function onDrop(source, target) {
 
     var move = game.move({
