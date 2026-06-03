@@ -6,7 +6,31 @@
 <title>Community Bots - Schaakkanaal</title>
 
 <style>
+<h2>♟️ Speelbord</h2>
 
+<div id="board" style="width: 500px;"></div>
+
+<br>
+
+<button onclick="location.reload()">
+Nieuwe partij
+</button>
+
+<link rel="stylesheet"
+href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script>
+
+var board = Chessboard('board', {
+    draggable: true,
+    position: 'start'
+});
+
+</script>
 body{
     font-family:Segoe UI,Arial,sans-serif;
     background:#f6f6f3;
