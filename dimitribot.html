@@ -141,14 +141,37 @@ Nieuwe partij
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <script>
+
+<script>
+
+var game = new Chess();
+
+function onDrop(source, target) {
+
+    var move = game.move({
+        from: source,
+        to: target,
+        promotion: 'q'
+    });
+
+    if (move === null) {
+        return 'snapback';
+    }
+
+    console.log(game.fen());
+}
 
 var board = Chessboard('board', {
     draggable: true,
     position: 'start',
+    onDrop: onDrop,
     pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 });
+
+</script>
 
 </script>
 
