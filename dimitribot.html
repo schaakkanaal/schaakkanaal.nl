@@ -5,32 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Community Bots - Schaakkanaal</title>
 
-<style>
-<h2>♟️ Speelbord</h2>
-
-<div id="board" style="width: 500px;"></div>
-
-<br>
-
-<button onclick="location.reload()">
-Nieuwe partij
-</button>
-
 <link rel="stylesheet"
 href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
 
-<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-
-<script>
-
-var board = Chessboard('board', {
-    draggable: true,
-    position: 'start'
-});
-
-</script>
 body{
     font-family:Segoe UI,Arial,sans-serif;
     background:#f6f6f3;
@@ -62,8 +41,24 @@ h1{
     text-align:center;
 }
 
+#board{
+    width:500px;
+    max-width:100%;
+    margin:20px auto;
+}
+
+.board-section{
+    background:white;
+    padding:25px;
+    margin-top:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    text-align:center;
+}
+
 </style>
 </head>
+
 <body>
 
 <h1>🤖 Community Bots</h1>
@@ -126,9 +121,35 @@ Binnenkort beschikbaar
 
 </div>
 
-<p style="text-align:center;">
-<em>De eerste Community Bots zijn momenteel in ontwikkeling.</em>
+<div class="board-section">
+
+<h2>♟️ Speelbord</h2>
+
+<p>
+De eerste versie van DimitriBot is in ontwikkeling.
+Probeer alvast het bord uit.
 </p>
+
+<div id="board"></div>
+
+<button onclick="location.reload()" class="btn">
+Nieuwe partij
+</button>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script>
+
+var board = Chessboard('board', {
+    draggable: true,
+    position: 'start'
+});
+
+</script>
 
 </body>
 </html>
