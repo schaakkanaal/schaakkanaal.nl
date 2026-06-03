@@ -146,14 +146,7 @@ Nieuwe partij
 <script>
 
 var game = new Chess();
-    var engine = new Worker("stockfish-18-lite.js");
-
-engine.onmessage = function(event) {
-    console.log("STOCKFISH:", event.data);
-};
-
-engine.postMessage("uci");
-
+   
 let openingBook = {};
 
 fetch("openingbook.json")
