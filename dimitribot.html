@@ -218,14 +218,17 @@ console.log(
         encodeURIComponent(game.fen())
     )
     .then(response => response.text())
-    .then(move => {
+.then(move => {
 
-        console.log("Stockfish zet:", move);
+    console.log("Stockfish zet:", move);
 
-        game.move(move);
+    let resultaat = game.move(move);
 
-        board.position(game.fen());
+    console.log("Resultaat:", resultaat);
 
+    board.position(game.fen());
+
+});
     });
 
     return;
