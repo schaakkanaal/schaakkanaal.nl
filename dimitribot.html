@@ -213,15 +213,23 @@ console.log(
 
 } else {
 
-    chosenMove =
-        possibleMoves[
-            Math.floor(Math.random() * possibleMoves.length)
-        ];
+    fetch(
+        "http://127.0.0.1:5000/move?fen=" +
+        encodeURIComponent(game.fen())
+    )
+    .then(response => response.text())
+    .then(move => {
 
-    console.log(
-        "Geen boekzet gevonden:",
-        chosenMove
-    );
+        console.log("Stockfish zet:", move);
+
+        game.move(move);
+
+        board.position(game.fen());
+
+    });
+
+    return;
+
 }
 
 game.move(chosenMove);
