@@ -170,15 +170,51 @@ if (move === null) {
 
 window.setTimeout(function() {
 
-    var possibleMoves = game.moves();
+  var possibleMoves = game.moves();
 
-    if (possibleMoves.length === 0) return;
+if (possibleMoves.length === 0) return;
 
-    var randomMove =
-        possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+var fen = game.board().fen().split(" ")[0];
 
-    game.move(randomMove);
+var chosenMove = null;
 
+if (openingBook[fen]) {
+
+    var moves = openingBook[fen];
+
+    var bestMove = null;
+    var bestCount = 0;
+
+    for (var move in moves) {
+
+        if (moves[move] > bestCount) {
+            bestCount = moves[move];
+            bestMove = move;
+        }
+    }
+
+    chosenMove = bestMove;
+
+    console.log(
+        "DimitriBot boekzet:",
+        chosenMove,
+        "(" + bestCount + " keer)"
+    );
+
+} else {
+
+    chosenMove =
+        possibleMoves[
+            Math.floor(Math.random() * possibleMoves.length)
+        ];
+
+    console.log(
+        "Geen boekzet gevonden:",
+        chosenMove
+    );
+}
+
+game.move(chosenMove);
     board.position(game.fen());
 
 }, 500);
