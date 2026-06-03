@@ -176,6 +176,8 @@ if (possibleMoves.length === 0) return;
 
 var fen = game.fen().split(" ")[0];
 
+console.log("Zoek FEN:", fen);
+
 var chosenMove = null;
 
 if (openingBook[fen]) {
