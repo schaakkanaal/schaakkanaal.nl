@@ -222,8 +222,11 @@ console.log(
 
     console.log("Stockfish zet:", move);
 
-    let resultaat = game.move(move);
-
+   let resultaat = game.move({
+    from: move.substring(0, 2),
+    to: move.substring(2, 4),
+    promotion: "q"
+});
     console.log("Resultaat:", resultaat);
 
     board.position(game.fen());
