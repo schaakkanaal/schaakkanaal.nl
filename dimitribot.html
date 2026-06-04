@@ -179,7 +179,11 @@ Speel als wit
 <button onclick="newGameBlack()" class="btn">
 Speel als zwart
 </button>
-
+    
+<button onclick="downloadPGN()" class="btn">
+    Download PGN
+</button>
+    
   <div id="pgnBox"
      style="
         background:white;
@@ -425,6 +429,28 @@ function updatePGN() {
 
     document.getElementById("pgnBox").textContent =
         game.pgn();
+
+}
+    function downloadPGN() {
+
+    let pgnText = game.pgn();
+
+    let blob = new Blob(
+        [pgnText],
+        { type: "text/plain" }
+    );
+
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "DimitriBot-partij.pgn";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
 
 }
     
