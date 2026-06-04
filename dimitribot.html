@@ -131,6 +131,22 @@ Probeer alvast het bord uit.
 </p>
 
 <div id="board"></div>
+    
+    <div id="koContainer" style="display:none;">
+
+<video
+    id="koVideo"
+    width="500"
+    autoplay
+    muted>
+
+    <source
+        src="Dimitri video greenscreen.mp4"
+        type="video/mp4">
+
+</video>
+
+</div>
 
 <button onclick="newGameWhite()" class="btn">
 Speel als wit
@@ -375,6 +391,18 @@ function updatePGN() {
 
     document.getElementById("pgnBox").textContent =
         game.pgn();
+
+}
+    
+    function playKO() {
+
+    document.getElementById("koContainer").style.display = "block";
+
+    let video = document.getElementById("koVideo");
+
+    video.currentTime = 0;
+
+    video.play();
 
 }
     
