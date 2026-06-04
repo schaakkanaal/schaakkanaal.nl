@@ -252,6 +252,7 @@ function onDrop(source, target) {
 if (move === null) {
     return 'snapback';
 }
+    updatePGN();
 
 window.setTimeout(function() {
 
@@ -315,6 +316,7 @@ console.log(
     console.log("Resultaat:", resultaat);
 
     board.position(game.fen());
+updatePGN();
 
 });
 
@@ -323,12 +325,19 @@ console.log(
 }
 
 game.move(chosenMove);
-    board.position(game.fen());
-
+board.position(game.fen());
+updatePGN();
 }, 500);
 }
 
-var board = Chessboard('board', {
+function updatePGN() {
+
+    document.getElementById("pgnBox").textContent =
+        game.pgn();
+
+}
+    
+    var board = Chessboard('board', {
     draggable: true,
     position: 'start',
     onDrop: onDrop,
