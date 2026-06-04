@@ -241,7 +241,11 @@ fetch("openingbook.json")
   });
     
 
-    function playMoveSound(move) {
+function playMoveSound(move) {
+
+    if (!move) {
+        return;
+    }
 
     if (move.flags.includes("k") || move.flags.includes("q")) {
         castleSound.play();
@@ -264,6 +268,7 @@ fetch("openingbook.json")
     }
 
     moveSound.play();
+
 }
     
     function onDrop(source, target) {
