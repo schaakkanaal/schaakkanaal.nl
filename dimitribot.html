@@ -380,26 +380,8 @@ console.log(
 
 } else {
 
-   var possibleMoves = game.moves();
-
-var randomMove =
-    possibleMoves[
-        Math.floor(Math.random() * possibleMoves.length)
-    ];
-
-let resultaat = game.move(randomMove);
-
-playMoveSound(resultaat);
-
-board.position(game.fen());
-
-updatePGN();
-    if (game.in_checkmate()) {
-    playKO();
-}
-
-return; 
- /*
+  
+ 
     fetch(
         "http://127.0.0.1:5000/move?fen=" +
         encodeURIComponent(game.fen())
@@ -419,11 +401,14 @@ return;
 
     board.position(game.fen());
 updatePGN();
+    if (game.in_checkmate()) {
+    playKO();
+}
 
 });
 
     return;
-    */
+    
 
 }
 
