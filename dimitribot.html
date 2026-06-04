@@ -329,6 +329,10 @@ function playMoveSound(move) {
 if (move === null) {
     return 'snapback';
 }
+        if (game.in_checkmate()) {
+    playKO();
+    return;
+}
     updatePGN();
 
 window.setTimeout(function() {
@@ -376,6 +380,26 @@ console.log(
 
 } else {
 
+   var possibleMoves = game.moves();
+
+var randomMove =
+    possibleMoves[
+        Math.floor(Math.random() * possibleMoves.length)
+    ];
+
+let resultaat = game.move(randomMove);
+
+playMoveSound(resultaat);
+
+board.position(game.fen());
+
+updatePGN();
+    if (game.in_checkmate()) {
+    playKO();
+}
+
+return; 
+ /*
     fetch(
         "http://127.0.0.1:5000/move?fen=" +
         encodeURIComponent(game.fen())
@@ -399,6 +423,7 @@ updatePGN();
 });
 
     return;
+    */
 
 }
 
