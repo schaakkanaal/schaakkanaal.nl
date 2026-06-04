@@ -205,6 +205,12 @@ fetch("openingbook.json")
   });
     
 function onDrop(source, target) {
+    if (
+    (playerColor === "white" && game.turn() !== "w") ||
+    (playerColor === "black" && game.turn() !== "b")
+) {
+    return 'snapback';
+}
 
     var move = game.move({
         from: source,
