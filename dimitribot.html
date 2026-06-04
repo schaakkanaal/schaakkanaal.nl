@@ -172,26 +172,41 @@ function newGameBlack() {
     board.orientation('black');
     board.position('start');
 
-    window.setTimeout(function() {
+   window.setTimeout(function() {
 
-        fetch(
-            "http://127.0.0.1:5000/move?fen=" +
-            encodeURIComponent(game.fen())
-        )
-        .then(response => response.text())
-        .then(move => {
+    var fen = game.fen().split(" ")[0];
 
-            game.move({
-                from: move.substring(0, 2),
-                to: move.substring(2, 4),
-                promotion: "q"
-            });
+    if (openingBook[fen]) {
 
-            board.position(game.fen());
+        var moves = openingBook[fen];
 
-        });
+        var totalWeight = 0;
 
-    }, 500);
+        for (var move in moves) {
+            totalWeight += moves[move];
+        }
+
+        var random = Math.random() * totalWeight;
+
+        var runningTotal = 0;
+        var chosenMove = null;
+
+        for (var move in moves) {
+
+            runningTotal += moves[move];
+
+            if (random <= runningTotal) {
+                chosenMove = move;
+                break;
+            }
+        }
+
+        game.move(chosenMove);
+        board.position(game.fen());
+
+    }
+
+}, 500);
 
 }
    
