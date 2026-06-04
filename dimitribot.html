@@ -132,8 +132,12 @@ Probeer alvast het bord uit.
 
 <div id="board"></div>
 
-<button onclick="location.reload()" class="btn">
-Nieuwe partij
+<button onclick="newGameWhite()" class="btn">
+Speel als wit
+</button>
+
+<button onclick="newGameBlack()" class="btn">
+Speel als zwart
 </button>
 
 </div>
@@ -146,6 +150,25 @@ Nieuwe partij
 <script>
 
 var game = new Chess();
+    var playerColor = "white";
+
+function newGameWhite() {
+
+    playerColor = "white";
+
+    game.reset();
+    board.position('start');
+
+}
+
+function newGameBlack() {
+
+    playerColor = "black";
+
+    game.reset();
+    board.position('start');
+
+}
    
 let openingBook = {};
 
