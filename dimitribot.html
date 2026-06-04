@@ -172,6 +172,27 @@ function newGameBlack() {
     board.orientation('black');
     board.position('start');
 
+    window.setTimeout(function() {
+
+        fetch(
+            "http://127.0.0.1:5000/move?fen=" +
+            encodeURIComponent(game.fen())
+        )
+        .then(response => response.text())
+        .then(move => {
+
+            game.move({
+                from: move.substring(0, 2),
+                to: move.substring(2, 4),
+                promotion: "q"
+            });
+
+            board.position(game.fen());
+
+        });
+
+    }, 500);
+
 }
    
 let openingBook = {};
