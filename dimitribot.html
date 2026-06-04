@@ -150,13 +150,15 @@ Speel als zwart
 <script>
 
 var game = new Chess();
-    var playerColor = "white";
+   var playerColor = "white";
 
 function newGameWhite() {
 
     playerColor = "white";
 
     game.reset();
+
+    board.orientation('white');
     board.position('start');
 
 }
@@ -166,6 +168,8 @@ function newGameBlack() {
     playerColor = "black";
 
     game.reset();
+
+    board.orientation('black');
     board.position('start');
 
 }
