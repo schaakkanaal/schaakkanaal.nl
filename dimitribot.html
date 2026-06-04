@@ -362,7 +362,10 @@ updatePGN();
 
 }
 
-game.move(chosenMove);
+let resultaat = game.move(chosenMove);
+
+playMoveSound(resultaat);
+
 board.position(game.fen());
 updatePGN();
 }, 500);
