@@ -130,21 +130,45 @@ De eerste versie van DimitriBot is in ontwikkeling.
 Probeer alvast het bord uit.
 </p>
 
-<div id="board"></div>
-    
-    <div id="koContainer" style="display:none;">
+<div id="boardWrapper"
+     style="
+        position:relative;
+        width:500px;
+        max-width:100%;
+        margin:auto;
+     ">
 
-<video
-    id="koVideo"
-    width="500"
-    autoplay
-    muted>
+    <div id="board"></div>
 
-    <source
-        src="Dimitri video greenscreen.mp4"
-        type="video/mp4">
+    <div id="koContainer"
+         style="
+            display:none;
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            z-index:999;
+            pointer-events:none;
+         ">
 
-</video>
+        <video
+            id="koVideo"
+            autoplay
+            muted
+            style="
+                width:100%;
+                height:100%;
+                object-fit:contain;
+            ">
+
+            <source
+                src="Dimitri video greenscreen.mp4"
+                type="video/mp4">
+
+        </video>
+
+    </div>
 
 </div>
 
