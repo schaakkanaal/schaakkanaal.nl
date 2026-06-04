@@ -164,7 +164,12 @@ PGN komt hier
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <script>
-
+const moveSound = new Audio("move.mp3");
+const captureSound = new Audio("capture.mp3");
+const castleSound = new Audio("castle.mp3");
+const checkSound = new Audio("check.mp3");
+const promoteSound = new Audio("promote.mp3");
+    
 var game = new Chess();
    var playerColor = "white";
 
@@ -235,7 +240,33 @@ fetch("openingbook.json")
       console.log("Openingboek geladen!");
   });
     
-function onDrop(source, target) {
+
+    function playMoveSound(move) {
+
+    if (move.flags.includes("k") || move.flags.includes("q")) {
+        castleSound.play();
+        return;
+    }
+
+    if (move.flags.includes("p")) {
+        promoteSound.play();
+        return;
+    }
+
+    if (move.captured) {
+        captureSound.play();
+        return;
+    }
+
+    if (game.in_check()) {
+        checkSound.play();
+        return;
+    }
+
+    moveSound.play();
+}
+    
+    function onDrop(source, target) {
     if (
     (playerColor === "white" && game.turn() !== "w") ||
     (playerColor === "black" && game.turn() !== "b")
@@ -248,6 +279,7 @@ function onDrop(source, target) {
         to: target,
         promotion: 'q'
     });
+        playMoveSound(move);
 
 if (move === null) {
     return 'snapback';
@@ -313,6 +345,7 @@ console.log(
     to: move.substring(2, 4),
     promotion: "q"
 });
+    playMoveSound(resultaat);
     console.log("Resultaat:", resultaat);
 
     board.position(game.fen());
