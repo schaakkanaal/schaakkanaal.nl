@@ -548,90 +548,111 @@ function updatePGN() {
 
     let botCaptures = "";
     let playerCaptures = "";
+    let botScore = 0;
+    let playerScore = 0;
 
-    let whiteLost =
-        (startPieces.P - currentPieces.P);
+   let whiteLost =
+    (startPieces.P - currentPieces.P);
 
-    let blackLost =
-        (startPieces.p - currentPieces.p);
+let blackLost =
+    (startPieces.p - currentPieces.p);
 
-    for (let i = 0; i < blackLost; i++) {
-        botCaptures += "♙";
-    }
+for (let i = 0; i < blackLost; i++) {
+    botCaptures += "♙";
+    playerScore += 1;
+}
 
-    for (let i = 0; i < whiteLost; i++) {
-        playerCaptures += "♙";
-    }
+for (let i = 0; i < whiteLost; i++) {
+    playerCaptures += "♙";
+    botScore += 1;
+}
 
-    let whiteKnightLost =
-        startPieces.N - currentPieces.N;
+let whiteKnightLost =
+    startPieces.N - currentPieces.N;
 
-    let blackKnightLost =
-        startPieces.n - currentPieces.n;
+let blackKnightLost =
+    startPieces.n - currentPieces.n;
 
-    for (let i = 0; i < blackKnightLost; i++) {
-        botCaptures += "♘";
-    }
+for (let i = 0; i < blackKnightLost; i++) {
+    botCaptures += "♘";
+    playerScore += 3;
+}
 
-    for (let i = 0; i < whiteKnightLost; i++) {
-        playerCaptures += "♘";
-    }
+for (let i = 0; i < whiteKnightLost; i++) {
+    playerCaptures += "♘";
+    botScore += 3;
+}
 
-    let whiteBishopLost =
-        startPieces.B - currentPieces.B;
+let whiteBishopLost =
+    startPieces.B - currentPieces.B;
 
-    let blackBishopLost =
-        startPieces.b - currentPieces.b;
+let blackBishopLost =
+    startPieces.b - currentPieces.b;
 
-    for (let i = 0; i < blackBishopLost; i++) {
-        botCaptures += "♗";
-    }
+for (let i = 0; i < blackBishopLost; i++) {
+    botCaptures += "♗";
+    playerScore += 3;
+}
 
-    for (let i = 0; i < whiteBishopLost; i++) {
-        playerCaptures += "♗";
-    }
+for (let i = 0; i < whiteBishopLost; i++) {
+    playerCaptures += "♗";
+    botScore += 3;
+}
 
-    let whiteRookLost =
-        startPieces.R - currentPieces.R;
+let whiteRookLost =
+    startPieces.R - currentPieces.R;
 
-    let blackRookLost =
-        startPieces.r - currentPieces.r;
+let blackRookLost =
+    startPieces.r - currentPieces.r;
 
-    for (let i = 0; i < blackRookLost; i++) {
-        botCaptures += "♖";
-    }
+for (let i = 0; i < blackRookLost; i++) {
+    botCaptures += "♖";
+    playerScore += 5;
+}
 
-    for (let i = 0; i < whiteRookLost; i++) {
-        playerCaptures += "♖";
-    }
+for (let i = 0; i < whiteRookLost; i++) {
+    playerCaptures += "♖";
+    botScore += 5;
+}
 
-    let whiteQueenLost =
-        startPieces.Q - currentPieces.Q;
+let whiteQueenLost =
+    startPieces.Q - currentPieces.Q;
 
-    let blackQueenLost =
-        startPieces.q - currentPieces.q;
+let blackQueenLost =
+    startPieces.q - currentPieces.q;
 
-    for (let i = 0; i < blackQueenLost; i++) {
-        botCaptures += "♕";
-    }
+for (let i = 0; i < blackQueenLost; i++) {
+    botCaptures += "♕";
+    playerScore += 9;
+}
 
-    for (let i = 0; i < whiteQueenLost; i++) {
-        playerCaptures += "♕";
-    }
+for (let i = 0; i < whiteQueenLost; i++) {
+    playerCaptures += "♕";
+    botScore += 9;
+}
 
-    if (botCaptures === "") {
-        botCaptures = "-";
-    }
+let diff = playerScore - botScore;
 
-    if (playerCaptures === "") {
-        playerCaptures = "-";
-    }
+if (diff > 0) {
+    playerCaptures += " +" + diff;
+}
+else if (diff < 0) {
+    botCaptures += " +" + Math.abs(diff);
+}
 
-    document.getElementById("botCaptures").textContent =
-        botCaptures;
+if (botCaptures === "") {
+    botCaptures = "-";
+}
 
-    document.getElementById("playerCaptures").textContent =
-        playerCaptures;
+if (playerCaptures === "") {
+    playerCaptures = "-";
+}
+
+document.getElementById("botCaptures").textContent =
+    playerCaptures;
+
+document.getElementById("playerCaptures").textContent =
+    botCaptures;
 }
     
     function downloadPGN() {
