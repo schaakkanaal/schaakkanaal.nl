@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Bots - Schaakkanaal</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f6f6f3;
+    color:#222;
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+.bot-card{
+    background:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 20px;
+    background:#e67e22;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+}
+
+h1{
+    text-align:center;
+}
+
+#board{
+    width:500px;
+    max-width:100%;
+    margin:20px auto;
+}
+
+.board-section{
+    background:white;
+    padding:25px;
+    margin-top:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🤖 Community Bots</h1>
+
+<p style="text-align:center;">
+Speel binnenkort tegen bekende persoonlijkheden uit de Schaakkanaal-community.
+</p>
+
+<div class="bot-card">
+
+<h2>😊 Beginner Dimitri</h2>
+
+<p>
+Geschatte speelsterkte: 800
+</p>
+
+<p>
+Leert nog iedere dag iets nieuws.
+</p>
+
+<a href="#" class="btn">
+Binnenkort beschikbaar
+</a>
+
+</div>
+
+<div class="bot-card">
+
+<h2>♟️ Clubspeler Dimitri</h2>
+
+<p>
+Geschatte speelsterkte: 1400
+</p>
+
+<p>
+Kent de basisprincipes en houdt van tempo.
+</p>
+
+<a href="#" class="btn">
+Binnenkort beschikbaar
+</a>
+
+</div>
+
+<div class="bot-card">
+
+<h2>🔥 Stream Dimitri</h2>
+
+<p>
+Geschatte speelsterkte: 2000+
+</p>
+
+<p>
+Tempo is goed.
+</p>
+
+<a href="#" class="btn">
+Binnenkort beschikbaar
+</a>
+
+</div>
+
+<div class="board-section">
+
+<h2>♟️ Speelbord</h2>
+
+<p>
+De eerste versie van DimitriBot is in ontwikkeling.
+Probeer alvast het bord uit.
+</p>
+
+<div id="gameArea"
+     style="
+        display:flex;
+        justify-content:center;
+        align-items:flex-start;
+        gap:20px;
+        flex-wrap:wrap;
+     ">
+
+    <!-- LINKERKOLOM -->
+
+    <div id="boardWrapper"
+         style="
+            position:relative;
+            width:500px;
+            max-width:100%;
+            margin:auto;
+         ">
+
+        <div id="board"></div>
+
+        <canvas id="arrowCanvas"
+        style="
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            pointer-events:none;
+            z-index:10;
+        ">
+</canvas>
+
+        <div id="koContainer"
+             style="
+                display:none;
+                position:absolute;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                z-index:999;
+                pointer-events:none;
+             ">
+
+            <video
+                id="koVideo"
+                autoplay
+                muted
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                ">
+
+                <source
+                    src="Dimitri RLE.webm"
+                    type="video/webm">
+
+            </video>
+
+        </div>
+
+        <div style="
+            text-align:center;
+            margin-top:15px;
+        ">
+
+            <button onclick="newGameWhite()" class="btn">
+                Speel als wit
+            </button>
+
+            <button onclick="newGameBlack()" class="btn">
+                Speel als zwart
+            </button>
+
+            <button onclick="downloadPGN()" class="btn">
+                Download PGN
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- RECHTERKOLOM -->
+
+    <div id="botPanel"
+         style="
+            width:300px;
+            text-align:center;
+            margin-right:20px;
+         ">
+
+        <h3>Bebaarde Sigaar</h3>
+
+        <img
+            src="dimitri.jpg"
+            style="
+                width:270px;
+                border-radius:12px;
+            ">
+<div id="materialBox"
+     style="
+        margin-top:20px;
+        text-align:center;
+     ">
+
+    <div id="botCaptures"
+         style="
+            font-size:22px;
+            min-height:35px;
+         ">
+    </div>
+
+    <div
+         style="
+            margin-top:35px;
+            font-size:14px;
+            color:#666;
+         ">
+        Uitdager
+    </div>
+
+    <div id="playerCaptures"
+         style="
+            font-size:22px;
+            min-height:35px;
+         ">
+    </div>
+
+</div>
+
+        <div
+            id="quoteBox"
+            style="
+                margin-top:20px;
+                padding:15px;
+                background:white;
+                border-radius:12px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.08);
+                font-style:italic;
+            ">
+
+            "Tempo is goed."
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="pgnBox"
+     style="
+        background:white;
+        margin-top:20px;
+        padding:15px;
+        border-radius:10px;
+        min-height:100px;
+        max-height:250px;
+        overflow-y:auto;
+        text-align:left;
+        white-space:pre-wrap;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+     ">
+PGN komt hier
+</div>
+    
+<div id="versionBox"
+     style="
+        margin-top:10px;
+        text-align:center;
+        color:#888;
+        font-size:12px;
+     ">
+    DimitriBot v1.02-beta • Build 2026-06-05-01
+</div>
+    
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script>
+const moveSound = new Audio("move.mp3");
+const captureSound = new Audio("capture.mp3");
+const castleSound = new Audio("castle.mp3");
+const checkSound = new Audio("check.mp3");
+const promoteSound = new Audio("promote.mp3");
+    
+var game = new Chess();
+var playerColor = "white";
+    let arrows = [];
+    let arrowStart = null;
+
+    let quotes = [
+    '"Tempo is goed."',
+    '"Knollen moeten deruit."',
+    '"Deze opening ken ik."',
+    '"Kan ik dat veilig pakken?"',
+    '"Een pion is en blijft een pion."',
+    '"Dat was theorie."',
+    '"Eerst even naar OBS, check check dubbelchek. Kijken of de recording er goed in staat"',
+    '"Rekenen is voor grootmeesters."',
+    '"Waarom zou je dat doen?"',
+    '"Dat lijkt mij sketchy."',
+    '"Een pion is ook een stuk."',
+    '"Volgende zet mat. Of niet? Argh die matpatronen"',
+    '"Ik speel deze opening al jaren."',
+    '"Dit staat in mijn boekje."',
+    '"Oeh dat is een goeie zet jaaa"',
+    '"Interessante keuze."',
+    '"Daar had ik op gehoopt."',
+    '"Dat zag ik aankomen."',
+    '"Je speelt snel vandaag."',
+    '"Mijn gevoel zegt dat dit goed is."'
+];
+    
+function newGameWhite() {
+
+    playerColor = "white";
+
+    game.reset();
+
+    board.orientation('white');
+    board.position('start');
+    updatePGN();
+    updateMaterial();
+    randomQuote();
+
+}
+
+function newGameBlack() {
+
+    playerColor = "black";
+
+    game.reset();
+
+    board.orientation('black');
+    board.position('start');
+    updatePGN();
+    updateMaterial();
+    randomQuote();
+
+   window.setTimeout(function() {
+
+    var fen = game.fen().split(" ")[0];
+
+    if (openingBook[fen]) {
+
+        var moves = openingBook[fen];
+
+        var totalWeight = 0;
+
+        for (var move in moves) {
+            totalWeight += moves[move];
+        }
+
+        var random = Math.random() * totalWeight;
+
+        var runningTotal = 0;
+        var chosenMove = null;
+
+        for (var move in moves) {
+
+            runningTotal += moves[move];
+
+            if (random <= runningTotal) {
+                chosenMove = move;
+                break;
+            }
+        }
+
+        game.move(chosenMove);
+        board.position(game.fen());
+
+    }
+
+}, 500);
+
+}
+   
+let openingBook = {};
+
+fetch("openingbook.json")
+  .then(response => response.json())
+  .then(data => {
+      openingBook = data;
+      console.log("Openingboek geladen!");
+  });
+    
+
+function playMoveSound(move) {
+
+    if (!move) {
+        return;
+    }
+
+    if (move.flags.includes("k") || move.flags.includes("q")) {
+        castleSound.play();
+        return;
+    }
+
+    if (move.flags.includes("p")) {
+        promoteSound.play();
+        return;
+    }
+
+    if (move.captured) {
+        captureSound.play();
+        return;
+    }
+
+    if (game.in_check()) {
+        checkSound.play();
+        return;
+    }
+
+    moveSound.play();
+
+}
+    
+    function onDrop(source, target) {
+    if (
+    (playerColor === "white" && game.turn() !== "w") ||
+    (playerColor === "black" && game.turn() !== "b")
+) {
+    return 'snapback';
+}
+
+    var move = game.move({
+        from: source,
+        to: target,
+        promotion: 'q'
+    });
+        playMoveSound(move);
+
+if (move === null) {
+    return 'snapback';
+}
+        if (game.in_checkmate()) {
+    playKO();
+    return;
+}
+        updatePGN();
+        updateMaterial();
+        randomQuote();
+
+window.setTimeout(function() {
+
+  var possibleMoves = game.moves();
+
+if (possibleMoves.length === 0) return;
+
+var fen = game.fen().split(" ")[0];
+
+console.log("Zoek FEN:", fen);
+
+var chosenMove = null;
+
+if (openingBook[fen]) {
+
+    var moves = openingBook[fen];
+
+    var totalWeight = 0;
+
+for (var move in moves) {
+    totalWeight += moves[move];
+}
+
+var random = Math.random() * totalWeight;
+
+var runningTotal = 0;
+
+for (var move in moves) {
+
+    runningTotal += moves[move];
+
+    if (random <= runningTotal) {
+
+        chosenMove = move;
+        break;
+
+    }
+}
+
+console.log(
+    "DimitriBot boekzet:",
+    chosenMove
+);
+
+} else {
+
+  
+ fetch(
+    "https://api.schaakkanaal.nl/move?fen=" +
+    encodeURIComponent(game.fen())
+)
+.then(response => response.text())
+.then(move => {
+
+    console.log("Stockfish zet:", move);
+
+   let resultaat = game.move({
+    from: move.substring(0, 2),
+    to: move.substring(2, 4),
+    promotion: "q"
+});
+    playMoveSound(resultaat);
+    console.log("Resultaat:", resultaat);
+
+    board.position(game.fen());
+    updatePGN();
+    updateMaterial();
+    randomQuote();
+    
+    if (game.in_checkmate()) {
+    playKO();
+}
+
+});
+
+    return;
+    
+
+}
+
+let resultaat = game.move(chosenMove);
+
+playMoveSound(resultaat);
+
+board.position(game.fen());
+updatePGN();
+    updateMaterial();
+}, 500);
+}
+
+function randomQuote() {
+
+    let quote =
+        quotes[Math.floor(Math.random() * quotes.length)];
+
+    document.getElementById("quoteBox").textContent =
+        quote;
+}
+    
+    function updatePGN() {
+
+    document.getElementById("pgnBox").textContent =
+        game.pgn();
+
+}
+
+   function updateMaterial() {
+
+    let fen = game.fen().split(" ")[0];
+
+    let startPieces = {
+        P: 8,
+        N: 2,
+        B: 2,
+        R: 2,
+        Q: 1,
+        p: 8,
+        n: 2,
+        b: 2,
+        r: 2,
+        q: 1
+    };
+
+    let currentPieces = {
+        P: 0,
+        N: 0,
+        B: 0,
+        R: 0,
+        Q: 0,
+        p: 0,
+        n: 0,
+        b: 0,
+        r: 0,
+        q: 0
+    };
+
+    for (let char of fen) {
+
+        if (currentPieces.hasOwnProperty(char)) {
+            currentPieces[char]++;
+        }
+
+    }
+
+    let botCaptures = "";
+    let playerCaptures = "";
+    let botScore = 0;
+    let playerScore = 0;
+
+  let whiteLost =
+    (startPieces.P - currentPieces.P);
+
+let blackLost =
+    (startPieces.p - currentPieces.p);
+
+for (let i = 0; i < blackLost; i++) {
+    playerCaptures += "♙";
+    playerScore += 1;
+}
+
+for (let i = 0; i < whiteLost; i++) {
+    botCaptures += "♙";
+    botScore += 1;
+}
+
+let whiteKnightLost =
+    startPieces.N - currentPieces.N;
+
+let blackKnightLost =
+    startPieces.n - currentPieces.n;
+
+for (let i = 0; i < blackKnightLost; i++) {
+    playerCaptures += "♘";
+    playerScore += 3;
+}
+
+for (let i = 0; i < whiteKnightLost; i++) {
+    botCaptures += "♘";
+    botScore += 3;
+}
+
+let whiteBishopLost =
+    startPieces.B - currentPieces.B;
+
+let blackBishopLost =
+    startPieces.b - currentPieces.b;
+
+for (let i = 0; i < blackBishopLost; i++) {
+    playerCaptures += "♗";
+    playerScore += 3;
+}
+
+for (let i = 0; i < whiteBishopLost; i++) {
+    botCaptures += "♗";
+    botScore += 3;
+}
+
+let whiteRookLost =
+    startPieces.R - currentPieces.R;
+
+let blackRookLost =
+    startPieces.r - currentPieces.r;
+
+for (let i = 0; i < blackRookLost; i++) {
+    playerCaptures += "♖";
+    playerScore += 5;
+}
+
+for (let i = 0; i < whiteRookLost; i++) {
+    botCaptures += "♖";
+    botScore += 5;
+}
+
+let whiteQueenLost =
+    startPieces.Q - currentPieces.Q;
+
+let blackQueenLost =
+    startPieces.q - currentPieces.q;
+
+for (let i = 0; i < blackQueenLost; i++) {
+    playerCaptures += "♕";
+    playerScore += 9;
+}
+
+for (let i = 0; i < whiteQueenLost; i++) {
+    botCaptures += "♕";
+    botScore += 9;
+}
+
+let diff = playerScore - botScore;
+
+if (diff > 0) {
+    playerCaptures += " +" + diff;
+}
+else if (diff < 0) {
+    botCaptures += " +" + Math.abs(diff);
+}
+
+if (botCaptures === "") {
+    botCaptures = "-";
+}
+
+if (playerCaptures === "") {
+    playerCaptures = "-";
+}
+
+document.getElementById("botCaptures").textContent =
+    botCaptures;
+
+document.getElementById("playerCaptures").textContent =
+    playerCaptures;
+}
+    
+   function getSquareFromMouse(event) {
+
+    let board =
+        document.getElementById("board");
+
+    let rect =
+        board.getBoundingClientRect();
+
+    let x =
+        event.clientX - rect.left;
+
+    let y =
+        event.clientY - rect.top;
+
+    let squareSize =
+        rect.width / 8;
+
+    let file =
+        Math.floor(x / squareSize);
+
+    let rank =
+        8 - Math.floor(y / squareSize);
+
+    return String.fromCharCode(97 + file) + rank;
+} 
+    function drawArrow(from, to) {
+
+    let canvas =
+        document.getElementById("arrowCanvas");
+
+   
+
+    let ctx =
+        canvas.getContext("2d");
+        
+
+    let squareSize =
+        canvas.width / 8;
+
+   
+        
+        function squareCenter(square) {
+
+        let file =
+            square.charCodeAt(0) - 97;
+
+        let rank =
+            8 - parseInt(square[1]);
+
+        return {
+            x: file * squareSize + squareSize / 2,
+            y: rank * squareSize + squareSize / 2
+        };
+    }
+        
+
+    let start =
+        squareCenter(from);
+
+    let end =
+        squareCenter(to);
+
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+ctx.moveTo(start.x, start.y);
+ctx.lineTo(end.x, end.y);
+ctx.stroke();
+
+let angle =
+    Math.atan2(
+        end.y - start.y,
+        end.x - start.x
+    );
+
+let headLength = 20;
+
+ctx.beginPath();
+
+ctx.moveTo(end.x, end.y);
+
+ctx.lineTo(
+    end.x - headLength * Math.cos(angle - Math.PI / 6),
+    end.y - headLength * Math.sin(angle - Math.PI / 6)
+);
+
+ctx.moveTo(end.x, end.y);
+
+ctx.lineTo(
+    end.x - headLength * Math.cos(angle + Math.PI / 6),
+    end.y - headLength * Math.sin(angle + Math.PI / 6)
+);
+
+ctx.stroke();
+}
+    
+ function redrawArrows() {
+
+    let canvas =
+        document.getElementById("arrowCanvas");
+
+    canvas.width =
+        canvas.offsetWidth;
+
+    canvas.height =
+        canvas.offsetHeight;
+
+    let ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    for (let arrow of arrows) {
+
+        drawArrow(
+            arrow.from,
+            arrow.to
+        );
+
+    }
+
+}   
+    function downloadPGN() {
+
+    let pgnText = game.pgn();
+
+    let blob = new Blob(
+        [pgnText],
+        { type: "text/plain" }
+    );
+
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "DimitriBot-partij.pgn";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+}
+    
+    function playKO() {
+
+    document.getElementById("koContainer").style.display = "block";
+
+    let video = document.getElementById("koVideo");
+
+    video.currentTime = 0;
+
+    video.play();
+
+}
+
+
+   
+function onDragStart(source, piece, position, orientation, event) {
+
+    if (event && event.button === 2) {
+        return false;
+    }
+
+}
+
+
+var board = Chessboard('board', {
+    draggable: true,
+    position: 'start',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+});
+    updatePGN();
+    updateMaterial();
+    randomQuote();
+
+    document.getElementById("boardWrapper")
+    .addEventListener("contextmenu", function(e) {
+
+        e.preventDefault();
+
+    });
+
+document.getElementById("boardWrapper")
+    .addEventListener("mousedown", function(e) {
+
+        if (e.button !== 2)
+            return;
+    
+
+        arrowStart =
+            getSquareFromMouse(e);
+
+        console.log(
+            "Pijl start:",
+            arrowStart
+        );
+
+    });
+
+document.getElementById("boardWrapper")
+    .addEventListener("mouseup", function(e) {
+
+        if (e.button !== 2)
+            return;
+
+        let arrowEnd =
+            getSquareFromMouse(e);
+
+        let canvas =
+            document.getElementById("arrowCanvas");
+
+        let ctx =
+            canvas.getContext("2d");
+
+        // Rechtermuisklik zonder slepen = pijl wissen
+        if (arrowStart === arrowEnd) {
+
+    arrows = [];
+
+    redrawArrows();
+
+    return;
+}
+
+if (!arrowStart || !arrowEnd) {
+    return;
+}
+
+arrows.push({
+    from: arrowStart,
+    to: arrowEnd
+});
+
+redrawArrows();
+
+});
+
+setTimeout(function() {
+
+
+    document
+        .querySelectorAll("img[data-piece]")
+        .forEach(function(piece) {
+
+            piece.addEventListener(
+                "contextmenu",
+                function(e) {
+
+                    e.preventDefault();
+
+                }
+            );
+
+        });
+
+}, 1000);
+setInterval(function() {
+
+    document
+        .querySelectorAll("img[data-piece]")
+        .forEach(function(piece) {
+
+            piece.oncontextmenu = function(e) {
+                e.preventDefault();
+                return false;
+            };
+
+           piece.onmousedown = function(e) {
+
+    if (e.button === 2) {
+
+        arrowStart =
+            getSquareFromMouse(e);
+
+        console.log(
+            "STUK START:",
+            arrowStart
+        );
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        return false;
+    }
+
+};
+
+        });
+
+}, 500);
+</script>
+
+</body>
+</html>
