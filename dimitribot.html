@@ -313,6 +313,7 @@ const promoteSound = new Audio("promote.mp3");
     
 var game = new Chess();
 var playerColor = "white";
+    let arrowStart = null;
 
     let quotes = [
     '"Tempo is goed."',
@@ -738,7 +739,33 @@ document.getElementById("playerCaptures").textContent =
     let squareSize =
         canvas.width / 8;
 
-    function squareCenter(square) {
+    function getSquareFromMouse(event) {
+
+    let board =
+        document.getElementById("board");
+
+    let rect =
+        board.getBoundingClientRect();
+
+    let x =
+        event.clientX - rect.left;
+
+    let y =
+        event.clientY - rect.top;
+
+    let squareSize =
+        rect.width / 8;
+
+    let file =
+        Math.floor(x / squareSize);
+
+    let rank =
+        8 - Math.floor(y / squareSize);
+
+    return String.fromCharCode(97 + file) + rank;
+}
+        
+        function squareCenter(square) {
 
         let file =
             square.charCodeAt(0) - 97;
@@ -838,6 +865,40 @@ ctx.stroke();
     updatePGN();
     updateMaterial();
     randomQuote();
+
+    document.getElementById("board")
+    .addEventListener("contextmenu", function(e) {
+
+        e.preventDefault();
+
+    });
+
+document.getElementById("board")
+    .addEventListener("mousedown", function(e) {
+
+        if (e.button !== 2)
+            return;
+
+        arrowStart =
+            getSquareFromMouse(e);
+
+    });
+
+document.getElementById("board")
+    .addEventListener("mouseup", function(e) {
+
+        if (e.button !== 2)
+            return;
+
+        let arrowEnd =
+            getSquareFromMouse(e);
+
+        drawArrow(
+            arrowStart,
+            arrowEnd
+        );
+
+    });
 
 </script>
 
