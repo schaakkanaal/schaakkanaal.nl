@@ -965,7 +965,38 @@ document.getElementById("boardWrapper")
 redrawArrows();
     });
 
+        arrows.push({
+        from: arrowStart,
+        to: arrowEnd
+    });
+
+    redrawArrows();
+
+});
+
+setTimeout(function() {
+
+    document
+        .querySelectorAll("img[data-piece]")
+        .forEach(function(piece) {
+
+            piece.addEventListener(
+                "contextmenu",
+                function(e) {
+
+                    e.preventDefault();
+
+                }
+            );
+
+        });
+
+}, 1000);
+
 </script>
+
+</body>
+</html>
 
 </script>
 
