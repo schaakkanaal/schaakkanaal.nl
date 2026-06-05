@@ -313,6 +313,7 @@ const promoteSound = new Audio("promote.mp3");
     
 var game = new Chess();
 var playerColor = "white";
+    let arrows = [];
     let arrowStart = null;
 
     let quotes = [
@@ -759,12 +760,7 @@ document.getElementById("playerCaptures").textContent =
 
     let ctx =
         canvas.getContext("2d");
-        ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-);
+        
 
     let squareSize =
         canvas.width / 8;
@@ -784,6 +780,7 @@ document.getElementById("playerCaptures").textContent =
             y: rank * squareSize + squareSize / 2
         };
     }
+        
 
     let start =
         squareCenter(from);
@@ -826,7 +823,37 @@ ctx.lineTo(
 ctx.stroke();
 }
     
-    
+ function redrawArrows() {
+
+    let canvas =
+        document.getElementById("arrowCanvas");
+
+    canvas.width =
+        canvas.offsetWidth;
+
+    canvas.height =
+        canvas.offsetHeight;
+
+    let ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    for (let arrow of arrows) {
+
+        drawArrow(
+            arrow.from,
+            arrow.to
+        );
+
+    }
+
+}   
     function downloadPGN() {
 
     let pgnText = game.pgn();
@@ -918,10 +945,12 @@ document.getElementById("board")
             return;
         }
 
-        drawArrow(
-            arrowStart,
-            arrowEnd
-        );
+        arrows.push({
+    from: arrowStart,
+    to: arrowEnd
+});
+
+redrawArrows();
 
     });
 
