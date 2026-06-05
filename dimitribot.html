@@ -895,14 +895,14 @@ ctx.stroke();
     updateMaterial();
     randomQuote();
 
-    document.getElementById("board")
+    document.getElementById("boardWrapper")
     .addEventListener("contextmenu", function(e) {
 
         e.preventDefault();
 
     });
 
-document.getElementById("board")
+document.getElementById("boardWrapper")
     .addEventListener("mousedown", function(e) {
 
         if (e.button !== 2)
@@ -911,9 +911,14 @@ document.getElementById("board")
         arrowStart =
             getSquareFromMouse(e);
 
+        console.log(
+            "Pijl start:",
+            arrowStart
+        );
+
     });
 
-document.getElementById("board")
+document.getElementById("boardWrapper")
     .addEventListener("mouseup", function(e) {
 
         if (e.button !== 2)
