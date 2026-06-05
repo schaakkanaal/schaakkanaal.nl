@@ -538,17 +538,39 @@ function updatePGN() {
 
     let diff = white - black;
 
-    let text = "";
+   let value = Math.abs(diff);
 
-    if (diff > 0) {
-        text = "+" + diff;
-    }
-    else if (diff < 0) {
-        text = diff;
-    }
-    else {
-        text = "0";
-    }
+let text = "";
+
+while (value >= 9) {
+    text += "♕";
+    value -= 9;
+}
+
+while (value >= 5) {
+    text += "♖";
+    value -= 5;
+}
+
+while (value >= 3) {
+    text += "♘";
+    value -= 3;
+}
+
+while (value >= 1) {
+    text += "♙";
+    value -= 1;
+}
+
+if (diff > 0) {
+    text += " +" + diff;
+}
+else if (diff < 0) {
+    text += " " + diff;
+}
+else {
+    text = "Gelijk";
+}
 
     document.getElementById("materialBox").textContent =
         text;
