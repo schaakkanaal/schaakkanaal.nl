@@ -956,6 +956,10 @@ document.getElementById("boardWrapper")
     return;
 }
 
+if (!arrowStart || !arrowEnd) {
+    return;
+}
+
 arrows.push({
     from: arrowStart,
     to: arrowEnd
