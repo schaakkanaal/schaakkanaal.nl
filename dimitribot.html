@@ -899,6 +899,9 @@ document.getElementById("board")
         let arrowEnd =
             getSquareFromMouse(e);
 
+        if (arrowStart === arrowEnd)
+            return;
+
         drawArrow(
             arrowStart,
             arrowEnd
