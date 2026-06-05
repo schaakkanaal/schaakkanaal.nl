@@ -300,8 +300,31 @@ const checkSound = new Audio("check.mp3");
 const promoteSound = new Audio("promote.mp3");
     
 var game = new Chess();
-   var playerColor = "white";
+var playerColor = "white";
 
+    let quotes = [
+    '"Tempo is goed."',
+    '"Knollen moeten deruit."',
+    '"Deze opening ken ik."',
+    '"Kan ik dat veilig pakken?"',
+    '"Een pion is en blijft een pion."',
+    '"Dat was theorie."',
+    '"Eerst even naar OBS, check check dubbelchek. Kijken of de recording er goed in staat"',
+    '"Rekenen is voor grootmeesters."',
+    '"Waarom zou je dat doen?"',
+    '"Dat lijkt mij sketchy."',
+    '"Een pion is ook een stuk."',
+    '"Volgende zet mat. Of niet? Argh die matpatronen"',
+    '"Ik speel deze opening al jaren."',
+    '"Dit staat in mijn boekje."',
+    '"Oeh dat is een goeie zet jaaa"',
+    '"Interessante keuze."',
+    '"Daar had ik op gehoopt."',
+    '"Dat zag ik aankomen."',
+    '"Je speelt snel vandaag."',
+    '"Mijn gevoel zegt dat dit goed is."'
+];
+    
 function newGameWhite() {
 
     playerColor = "white";
@@ -312,6 +335,7 @@ function newGameWhite() {
     board.position('start');
     updatePGN();
     updateMaterial();
+    randomQuote();
 
 }
 
@@ -325,6 +349,7 @@ function newGameBlack() {
     board.position('start');
     updatePGN();
     updateMaterial();
+    randomQuote();
 
    window.setTimeout(function() {
 
@@ -517,7 +542,16 @@ updatePGN();
 }, 500);
 }
 
-function updatePGN() {
+function randomQuote() {
+
+    let quote =
+        quotes[Math.floor(Math.random() * quotes.length)];
+
+    document.getElementById("quoteBox").textContent =
+        quote;
+}
+    
+    function updatePGN() {
 
     document.getElementById("pgnBox").textContent =
         game.pgn();
@@ -714,6 +748,7 @@ document.getElementById("playerCaptures").textContent =
 });
     updatePGN();
     updateMaterial();
+    randomQuote();
 
 </script>
 
