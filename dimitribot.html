@@ -138,7 +138,20 @@ Probeer alvast het bord uit.
         gap:20px;
         flex-wrap:wrap;
      ">
+</div>
 
+<button onclick="newGameWhite()" class="btn">
+Speel als wit
+</button>
+
+<button onclick="newGameBlack()" class="btn">
+Speel als zwart
+</button>
+    
+<button onclick="downloadPGN()" class="btn">
+    Download PGN
+</button>
+    
     <div id="boardWrapper"
          style="
             position:relative;
@@ -222,24 +235,12 @@ Probeer alvast het bord uit.
         font-style:italic;
     ">
 
-    Tempo is goed.
+    "Tempo is goed."
 
 </div>
     </div>
 
-</div>
 
-<button onclick="newGameWhite()" class="btn">
-Speel als wit
-</button>
-
-<button onclick="newGameBlack()" class="btn">
-Speel als zwart
-</button>
-    
-<button onclick="downloadPGN()" class="btn">
-    Download PGN
-</button>
     
   <div id="pgnBox"
      style="
