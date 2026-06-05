@@ -885,21 +885,10 @@ ctx.stroke();
 
 }
 
-    let rightClick = false;
-    function onDragStart() {
 
-    if (rightClick) {
-
-        rightClick = false;
-        return false;
-
-    }
-
-}
    var board = Chessboard('board', {
     draggable: true,
     position: 'start',
-    onDragStart: onDragStart,
     onDrop: onDrop,
     pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 });
