@@ -451,8 +451,9 @@ if (move === null) {
     playKO();
     return;
 }
-    updatePGN();
+        updatePGN();
         updateMaterial();
+        randomQuote();
 
 window.setTimeout(function() {
 
@@ -519,8 +520,10 @@ console.log(
     console.log("Resultaat:", resultaat);
 
     board.position(game.fen());
-updatePGN();
+    updatePGN();
     updateMaterial();
+    randomQuote();
+    
     if (game.in_checkmate()) {
     playKO();
 }
