@@ -721,25 +721,7 @@ document.getElementById("playerCaptures").textContent =
     playerCaptures;
 }
     
-   
-    function drawArrow(from, to) {
-
-    let canvas =
-        document.getElementById("arrowCanvas");
-
-    canvas.width =
-        canvas.offsetWidth;
-
-    canvas.height =
-        canvas.offsetHeight;
-
-    let ctx =
-        canvas.getContext("2d");
-
-    let squareSize =
-        canvas.width / 8;
-
-    function getSquareFromMouse(event) {
+   function getSquareFromMouse(event) {
 
     let board =
         document.getElementById("board");
@@ -763,7 +745,25 @@ document.getElementById("playerCaptures").textContent =
         8 - Math.floor(y / squareSize);
 
     return String.fromCharCode(97 + file) + rank;
-}
+} 
+    function drawArrow(from, to) {
+
+    let canvas =
+        document.getElementById("arrowCanvas");
+
+    canvas.width =
+        canvas.offsetWidth;
+
+    canvas.height =
+        canvas.offsetHeight;
+
+    let ctx =
+        canvas.getContext("2d");
+
+    let squareSize =
+        canvas.width / 8;
+
+   
         
         function squareCenter(square) {
 
