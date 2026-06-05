@@ -886,9 +886,20 @@ ctx.stroke();
 }
 
 
-   var board = Chessboard('board', {
+   
+function onDragStart(source, piece, position, orientation, event) {
+
+    if (event && event.button === 2) {
+        return false;
+    }
+
+}
+
+
+var board = Chessboard('board', {
     draggable: true,
     position: 'start',
+    onDragStart: onDragStart,
     onDrop: onDrop,
     pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 });
