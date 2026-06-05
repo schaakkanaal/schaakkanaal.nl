@@ -949,15 +949,12 @@ document.getElementById("boardWrapper")
         // Rechtermuisklik zonder slepen = pijl wissen
         if (arrowStart === arrowEnd) {
 
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+    arrows = [];
 
-            return;
-        }
+    redrawArrows();
+
+    return;
+}
 
         arrows.push({
     from: arrowStart,
