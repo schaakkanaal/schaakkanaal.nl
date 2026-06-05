@@ -884,10 +884,22 @@ ctx.stroke();
     video.play();
 
 }
-    
-    var board = Chessboard('board', {
+
+    let rightClick = false;
+    function onDragStart() {
+
+    if (rightClick) {
+
+        rightClick = false;
+        return false;
+
+    }
+
+}
+   var board = Chessboard('board', {
     draggable: true,
     position: 'start',
+    onDragStart: onDragStart,
     onDrop: onDrop,
     pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 });
@@ -907,6 +919,7 @@ document.getElementById("boardWrapper")
 
         if (e.button !== 2)
             return;
+        rightClick = true;
 
         arrowStart =
             getSquareFromMouse(e);
