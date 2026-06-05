@@ -952,29 +952,21 @@ document.getElementById("boardWrapper")
     arrows = [];
 
     redrawArrows();
-            
 
     return;
 }
 
-        arrows.push({
+arrows.push({
     from: arrowStart,
     to: arrowEnd
 });
 
 redrawArrows();
-    });
-
-        arrows.push({
-        from: arrowStart,
-        to: arrowEnd
-    });
-
-    redrawArrows();
 
 });
 
 setTimeout(function() {
+
 
     document
         .querySelectorAll("img[data-piece]")
@@ -992,11 +984,6 @@ setTimeout(function() {
         });
 
 }, 1000);
-
-</script>
-
-</body>
-</html>
 
 </script>
 
