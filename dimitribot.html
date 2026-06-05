@@ -304,7 +304,7 @@ PGN komt hier
         color:#888;
         font-size:12px;
      ">
-    DimitriBot v1.01-beta • Build 2026-06-05-01
+    DimitriBot v1.02-beta • Build 2026-06-05-01
 </div>
     
 </div>
@@ -525,9 +525,8 @@ console.log(
 } else {
 
   
- 
-   fetch(
-    "http://93.119.4.211:5000/move?fen=" +
+ fetch(
+    "https://api.schaakkanaal.nl/move?fen=" +
     encodeURIComponent(game.fen())
 )
 .then(response => response.text())
