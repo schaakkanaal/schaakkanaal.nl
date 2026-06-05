@@ -908,7 +908,7 @@ document.getElementById("boardWrapper")
 
         if (e.button !== 2)
             return;
-        rightClick = true;
+    
 
         arrowStart =
             getSquareFromMouse(e);
@@ -941,7 +941,7 @@ document.getElementById("boardWrapper")
     arrows = [];
 
     redrawArrows();
-            rightClick = false;
+            
 
     return;
 }
@@ -952,7 +952,6 @@ document.getElementById("boardWrapper")
 });
 
 redrawArrows();
-rightClick = false;
     });
 
 </script>
