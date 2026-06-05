@@ -567,19 +567,19 @@ function updatePGN() {
     let botScore = 0;
     let playerScore = 0;
 
-   let whiteLost =
+  let whiteLost =
     (startPieces.P - currentPieces.P);
 
 let blackLost =
     (startPieces.p - currentPieces.p);
 
 for (let i = 0; i < blackLost; i++) {
-    botCaptures += "♙";
+    playerCaptures += "♙";
     playerScore += 1;
 }
 
 for (let i = 0; i < whiteLost; i++) {
-    playerCaptures += "♙";
+    botCaptures += "♙";
     botScore += 1;
 }
 
@@ -590,12 +590,12 @@ let blackKnightLost =
     startPieces.n - currentPieces.n;
 
 for (let i = 0; i < blackKnightLost; i++) {
-    botCaptures += "♘";
+    playerCaptures += "♘";
     playerScore += 3;
 }
 
 for (let i = 0; i < whiteKnightLost; i++) {
-    playerCaptures += "♘";
+    botCaptures += "♘";
     botScore += 3;
 }
 
@@ -606,12 +606,12 @@ let blackBishopLost =
     startPieces.b - currentPieces.b;
 
 for (let i = 0; i < blackBishopLost; i++) {
-    botCaptures += "♗";
+    playerCaptures += "♗";
     playerScore += 3;
 }
 
 for (let i = 0; i < whiteBishopLost; i++) {
-    playerCaptures += "♗";
+    botCaptures += "♗";
     botScore += 3;
 }
 
@@ -622,12 +622,12 @@ let blackRookLost =
     startPieces.r - currentPieces.r;
 
 for (let i = 0; i < blackRookLost; i++) {
-    botCaptures += "♖";
+    playerCaptures += "♖";
     playerScore += 5;
 }
 
 for (let i = 0; i < whiteRookLost; i++) {
-    playerCaptures += "♖";
+    botCaptures += "♖";
     botScore += 5;
 }
 
@@ -638,12 +638,12 @@ let blackQueenLost =
     startPieces.q - currentPieces.q;
 
 for (let i = 0; i < blackQueenLost; i++) {
-    botCaptures += "♕";
+    playerCaptures += "♕";
     playerScore += 9;
 }
 
 for (let i = 0; i < whiteQueenLost; i++) {
-    playerCaptures += "♕";
+    botCaptures += "♕";
     botScore += 9;
 }
 
