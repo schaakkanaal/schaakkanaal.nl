@@ -292,6 +292,8 @@ function newGameWhite() {
 
     board.orientation('white');
     board.position('start');
+    updatePGN();
+    updateMaterial();
 
 }
 
@@ -303,6 +305,8 @@ function newGameBlack() {
 
     board.orientation('black');
     board.position('start');
+    updatePGN();
+    updateMaterial();
 
    window.setTimeout(function() {
 
@@ -591,6 +595,8 @@ function updatePGN() {
     onDrop: onDrop,
     pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
 });
+    updatePGN();
+    updateMaterial();
 
 </script>
 
