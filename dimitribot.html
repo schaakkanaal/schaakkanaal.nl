@@ -984,7 +984,32 @@ setTimeout(function() {
         });
 
 }, 1000);
+setInterval(function() {
 
+    document
+        .querySelectorAll("img[data-piece]")
+        .forEach(function(piece) {
+
+            piece.oncontextmenu = function(e) {
+                e.preventDefault();
+                return false;
+            };
+
+            piece.onmousedown = function(e) {
+
+                if (e.button === 2) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    return false;
+                }
+
+            };
+
+        });
+
+}, 500);
 </script>
 
 </body>
