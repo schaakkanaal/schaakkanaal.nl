@@ -999,17 +999,25 @@ setInterval(function() {
                 return false;
             };
 
-            piece.onmousedown = function(e) {
+           piece.onmousedown = function(e) {
 
-                if (e.button === 2) {
+    if (e.button === 2) {
 
-                    e.preventDefault();
-                    e.stopPropagation();
+        arrowStart =
+            getSquareFromMouse(e);
 
-                    return false;
-                }
+        console.log(
+            "STUK START:",
+            arrowStart
+        );
 
-            };
+        e.preventDefault();
+        e.stopPropagation();
+
+        return false;
+    }
+
+};
 
         });
 
