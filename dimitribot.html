@@ -138,20 +138,9 @@ Probeer alvast het bord uit.
         gap:20px;
         flex-wrap:wrap;
      ">
-</div>
 
-<button onclick="newGameWhite()" class="btn">
-Speel als wit
-</button>
+    <!-- LINKERKOLOM -->
 
-<button onclick="newGameBlack()" class="btn">
-Speel als zwart
-</button>
-    
-<button onclick="downloadPGN()" class="btn">
-    Download PGN
-</button>
-    
     <div id="boardWrapper"
          style="
             position:relative;
@@ -192,14 +181,35 @@ Speel als zwart
 
         </div>
 
+        <div style="
+            text-align:center;
+            margin-top:15px;
+        ">
+
+            <button onclick="newGameWhite()" class="btn">
+                Speel als wit
+            </button>
+
+            <button onclick="newGameBlack()" class="btn">
+                Speel als zwart
+            </button>
+
+            <button onclick="downloadPGN()" class="btn">
+                Download PGN
+            </button>
+
+        </div>
+
     </div>
 
-   <div id="botPanel"
-     style="
-        width:300px;
-        text-align:center;
-        margin-right:20px;
-     ">
+    <!-- RECHTERKOLOM -->
+
+    <div id="botPanel"
+         style="
+            width:300px;
+            text-align:center;
+            margin-right:20px;
+         ">
 
         <h3>Bebaarde Sigaar</h3>
 
@@ -210,43 +220,40 @@ Speel als zwart
                 border-radius:12px;
             ">
 
-       <div
-    id="materialBox"
-    style="
-        margin-top:20px;
-        font-size:22px;
-        font-weight:bold;
-    ">
-
-
+        <div
+            id="materialBox"
+            style="
+                margin-top:20px;
+                font-size:22px;
+                font-weight:bold;
+            ">
 
             ♙♙♙ +3
 
         </div>
 
-      <div
-    id="quoteBox"
-    style="
-        margin-top:20px;
-        padding:15px;
-        background:white;
-        border-radius:12px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.08);
-        font-style:italic;
-    ">
+        <div
+            id="quoteBox"
+            style="
+                margin-top:20px;
+                padding:15px;
+                background:white;
+                border-radius:12px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.08);
+                font-style:italic;
+            ">
 
-    "Tempo is goed."
+            "Tempo is goed."
 
-</div>
+        </div>
+
     </div>
 
+</div>
 
-    
-  <div id="pgnBox"
+<div id="pgnBox"
      style="
         background:white;
-        border:none;
-        box-shadow:0 2px 8px rgba(0,0,0,0.08);
         margin-top:20px;
         padding:15px;
         border-radius:10px;
@@ -255,6 +262,7 @@ Speel als zwart
         overflow-y:auto;
         text-align:left;
         white-space:pre-wrap;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
      ">
 PGN komt hier
 </div>
