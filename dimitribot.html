@@ -219,18 +219,20 @@ Probeer alvast het bord uit.
                 width:270px;
                 border-radius:12px;
             ">
+<div
+    id="materialBox"
+    style="
+        margin-top:20px;
+        font-size:22px;
+        font-weight:bold;
+        line-height:1.8;
+    ">
 
-        <div
-            id="materialBox"
-            style="
-                margin-top:20px;
-                font-size:22px;
-                font-weight:bold;
-            ">
+    <div id="botCaptures">-</div>
 
-            ♙♙♙ +3
+    <div id="playerCaptures">-</div>
 
-        </div>
+</div>
 
         <div
             id="quoteBox"
@@ -506,74 +508,130 @@ function updatePGN() {
 
 }
 
-    function updateMaterial() {
+   function updateMaterial() {
 
     let fen = game.fen().split(" ")[0];
 
-    let values = {
-        p: 1,
-        n: 3,
-        b: 3,
-        r: 5,
-        q: 9
+    let startPieces = {
+        P: 8,
+        N: 2,
+        B: 2,
+        R: 2,
+        Q: 1,
+        p: 8,
+        n: 2,
+        b: 2,
+        r: 2,
+        q: 1
     };
 
-    let white = 0;
-    let black = 0;
+    let currentPieces = {
+        P: 0,
+        N: 0,
+        B: 0,
+        R: 0,
+        Q: 0,
+        p: 0,
+        n: 0,
+        b: 0,
+        r: 0,
+        q: 0
+    };
 
-    for (let piece of fen) {
+    for (let char of fen) {
 
-        let lower = piece.toLowerCase();
-
-        if (values[lower]) {
-
-            if (piece === lower) {
-                black += values[lower];
-            } else {
-                white += values[lower];
-            }
-
+        if (currentPieces.hasOwnProperty(char)) {
+            currentPieces[char]++;
         }
+
     }
 
-    let diff = white - black;
+    let botCaptures = "";
+    let playerCaptures = "";
 
-   let value = Math.abs(diff);
+    let whiteLost =
+        (startPieces.P - currentPieces.P);
 
-let text = "";
+    let blackLost =
+        (startPieces.p - currentPieces.p);
 
-while (value >= 9) {
-    text += "♕";
-    value -= 9;
-}
+    for (let i = 0; i < blackLost; i++) {
+        botCaptures += "♙";
+    }
 
-while (value >= 5) {
-    text += "♖";
-    value -= 5;
-}
+    for (let i = 0; i < whiteLost; i++) {
+        playerCaptures += "♙";
+    }
 
-while (value >= 3) {
-    text += "♘";
-    value -= 3;
-}
+    let whiteKnightLost =
+        startPieces.N - currentPieces.N;
 
-while (value >= 1) {
-    text += "♙";
-    value -= 1;
-}
+    let blackKnightLost =
+        startPieces.n - currentPieces.n;
 
-if (diff > 0) {
-    text += " +" + diff;
-}
-else if (diff < 0) {
-    text += " " + diff;
-}
-else {
-    text = "Gelijk";
-}
+    for (let i = 0; i < blackKnightLost; i++) {
+        botCaptures += "♘";
+    }
 
-    document.getElementById("materialBox").textContent =
-        text;
+    for (let i = 0; i < whiteKnightLost; i++) {
+        playerCaptures += "♘";
+    }
+
+    let whiteBishopLost =
+        startPieces.B - currentPieces.B;
+
+    let blackBishopLost =
+        startPieces.b - currentPieces.b;
+
+    for (let i = 0; i < blackBishopLost; i++) {
+        botCaptures += "♗";
+    }
+
+    for (let i = 0; i < whiteBishopLost; i++) {
+        playerCaptures += "♗";
+    }
+
+    let whiteRookLost =
+        startPieces.R - currentPieces.R;
+
+    let blackRookLost =
+        startPieces.r - currentPieces.r;
+
+    for (let i = 0; i < blackRookLost; i++) {
+        botCaptures += "♖";
+    }
+
+    for (let i = 0; i < whiteRookLost; i++) {
+        playerCaptures += "♖";
+    }
+
+    let whiteQueenLost =
+        startPieces.Q - currentPieces.Q;
+
+    let blackQueenLost =
+        startPieces.q - currentPieces.q;
+
+    for (let i = 0; i < blackQueenLost; i++) {
+        botCaptures += "♕";
+    }
+
+    for (let i = 0; i < whiteQueenLost; i++) {
+        playerCaptures += "♕";
+    }
+
+    if (botCaptures === "") {
+        botCaptures = "-";
+    }
+
+    if (playerCaptures === "") {
+        playerCaptures = "-";
+    }
+
+    document.getElementById("botCaptures").textContent =
+        botCaptures;
+
+    document.getElementById("playerCaptures").textContent =
+        playerCaptures;
 }
     
     function downloadPGN() {
