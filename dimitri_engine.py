@@ -1,7 +1,7 @@
 import subprocess
 import random
 
-ENGINE_PATH = r"stockfish\stockfish-windows-x86-64-avx2.exe"
+ENGINE_PATH = "/usr/games/stockfish"
 
 
 def get_move(fen, depth=8):
