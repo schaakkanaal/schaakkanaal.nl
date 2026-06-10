@@ -4,7 +4,7 @@ import random
 ENGINE_PATH = "/usr/games/stockfish"
 
 
-def get_move(fen, depth=8):
+def get_move(fen, depth=4):
 
     engine = subprocess.Popen(
         ENGINE_PATH,
@@ -29,7 +29,7 @@ def get_move(fen, depth=8):
     send("setoption name MultiPV value 5")
 
     send("setoption name UCI_LimitStrength value true")
-    send("setoption name UCI_Elo value 1850")
+    send("setoption name UCI_Elo value 1600")
 
     send(f"position fen {fen}")
     send(f"go depth {depth}")
@@ -95,7 +95,7 @@ def get_move(fen, depth=8):
 
         zet = zetten[nummer]
 
-        if zet["score"] >= beste_score - 0.5:
+        if zet["score"] >= beste_score - 2.0:
             kandidaten.append(zet["move"])
 
     if len(kandidaten) == 1:
