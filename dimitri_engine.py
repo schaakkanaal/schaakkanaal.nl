@@ -29,7 +29,7 @@ def get_move(fen, depth=8):
     send("setoption name MultiPV value 5")
 
     send("setoption name UCI_LimitStrength value true")
-    send("setoption name UCI_Elo value 2000")
+    send("setoption name UCI_Elo value 1850")
 
     send(f"position fen {fen}")
     send(f"go depth {depth}")
@@ -95,13 +95,13 @@ def get_move(fen, depth=8):
 
         zet = zetten[nummer]
 
-        if zet["score"] >= beste_score - 1.2:
+        if zet["score"] >= beste_score - 0.5:
             kandidaten.append(zet["move"])
 
     if len(kandidaten) == 1:
         return kandidaten[0]
 
-    gewichten = [40, 25, 15, 10, 10]
+    gewichten = [30, 25, 20, 15, 10]
     gewichten = gewichten[:len(kandidaten)]
 
     gekozen_zet = random.choices(
