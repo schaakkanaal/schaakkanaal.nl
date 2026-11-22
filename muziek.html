@@ -157,6 +157,9 @@ async function loadSongs() {
       audio.controls = true;
       audio.preload = "none";
 
+      // Downloadoptie verbergen
+      audio.setAttribute("controlsList", "nodownload");
+
       const source = document.createElement("source");
       source.src = encodeURIComponent(song.filename);
       source.type = "audio/mpeg";
