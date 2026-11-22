@@ -14,43 +14,81 @@
       background: white;
     }
 
+    .music-container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
     .music-list {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    .music-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
+      grid-template-columns: minmax(180px, 1fr) minmax(220px, 320px) 90px;
+      align-items: center;
+      gap: 20px;
+      padding: 12px 10px;
+      border-bottom: 1px solid #eeeeee;
     }
 
-    .music-card {
-      background: #faf4ec;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    .music-row:last-child {
+      border-bottom: none;
     }
 
-    .music-card h3 {
-      margin-top: 0;
-      font-size: 1.15rem;
+    .music-title {
+      font-weight: 600;
+      color: #292929;
     }
 
-    .music-card audio {
+    .music-row audio {
       width: 100%;
-      margin-top: 10px;
+      height: 38px;
     }
 
-    .music-card .likes {
+    .music-likes {
+      text-align: right;
       color: #777;
-      font-size: .9rem;
-      margin-bottom: 0;
+      font-size: .95rem;
+      white-space: nowrap;
     }
 
     .music-status {
       text-align: center;
       padding: 20px;
+      color: #777;
     }
 
-    .back-link {
-      display: inline-block;
-      margin-top: 15px;
+    @media (max-width: 650px) {
+      .music-container {
+        margin: 15px;
+        padding: 15px;
+      }
+
+      .music-row {
+        grid-template-columns: 1fr auto;
+        gap: 8px 12px;
+      }
+
+      .music-title {
+        grid-column: 1;
+      }
+
+      .music-row audio {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+
+      .music-likes {
+        grid-column: 2;
+        grid-row: 1;
+      }
     }
   </style>
 </head>
@@ -71,10 +109,10 @@
     Meer dan 30 nummers, ontstaan binnen onze eigen community.
     Luister, ontdek en geniet!
   </p>
-  <a href="index.html" class="btn back-link">Terug naar de homepage</a>
+  <a href="index.html" class="btn">Terug naar de homepage</a>
 </header>
 
-<section id="nummers">
+<main class="music-container" id="nummers">
   <h2>🎧 Alle nummers</h2>
   <p>De complete verzameling muziek van Schaakkanaal.</p>
 
@@ -83,7 +121,7 @@
   </div>
 
   <div id="musicList" class="music-list"></div>
-</section>
+</main>
 
 <footer>
   <p>Schaakkanaal.nl • Community Muziek</p>
@@ -100,7 +138,7 @@ async function loadSongs() {
     const response = await fetch(`${API}/songs`);
 
     if (!response.ok) {
-      throw new Error("De muziek kon niet worden opgehaald.");
+      throw new Error("Muziek ophalen mislukt");
     }
 
     const songs = await response.json();
@@ -108,10 +146,11 @@ async function loadSongs() {
     status.textContent = songs.length + " nummers gevonden.";
 
     songs.forEach(song => {
-      const card = document.createElement("div");
-      card.className = "music-card";
+      const row = document.createElement("div");
+      row.className = "music-row";
 
-      const title = document.createElement("h3");
+      const title = document.createElement("div");
+      title.className = "music-title";
       title.textContent = "🎵 " + song.title;
 
       const audio = document.createElement("audio");
@@ -124,20 +163,20 @@ async function loadSongs() {
 
       audio.appendChild(source);
 
-      const likes = document.createElement("p");
-      likes.className = "likes";
+      const likes = document.createElement("div");
+      likes.className = "music-likes";
       likes.textContent = "👍 " + song.likes + " likes";
 
-      card.appendChild(title);
-      card.appendChild(audio);
-      card.appendChild(likes);
+      row.appendChild(title);
+      row.appendChild(audio);
+      row.appendChild(likes);
 
-      list.appendChild(card);
+      list.appendChild(row);
     });
 
   } catch (error) {
     status.textContent =
-      "Het ophalen van de muziek is niet gelukt. Probeer het later opnieuw.";
+      "Het ophalen van de muziek is niet gelukt.";
     console.error(error);
   }
 }
@@ -147,4 +186,3 @@ loadSongs();
 
 </body>
 </html>
-
