@@ -369,7 +369,9 @@ async function loadSongs() {
       audio.setAttribute("controlsList", "nodownload");
 
       const source = document.createElement("source");
-      source.src = encodeURIComponent(song.filename);
+
+      // Muziekbestanden staan in de map 'muziek'
+      source.src = "muziek/" + encodeURIComponent(song.filename);
       source.type = "audio/mpeg";
 
       audio.appendChild(source);
