@@ -23,6 +23,15 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
 
+    .top10-container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
     .music-list {
       display: flex;
       flex-direction: column;
@@ -31,7 +40,7 @@
 
     .music-row {
       display: grid;
-      grid-template-columns: minmax(180px, 1fr) minmax(220px, 320px) 90px;
+      grid-template-columns: minmax(180px, 1fr) minmax(220px, 320px) 150px;
       align-items: center;
       gap: 20px;
       padding: 12px 10px;
@@ -52,11 +61,38 @@
       height: 38px;
     }
 
+    .music-vote {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
     .music-likes {
-      text-align: right;
       color: #777;
       font-size: .95rem;
-      white-space: nowrap;
+    }
+
+    .vote-button {
+      border: none;
+      border-radius: 8px;
+      background: #f39c12;
+      color: white;
+      padding: 9px 13px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .vote-button:hover {
+      background: #df8b0b;
+    }
+
+    .vote-button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
     }
 
     .music-status {
@@ -65,8 +101,65 @@
       color: #777;
     }
 
+    .vote-message {
+      text-align: center;
+      margin: 15px 0;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .vote-message.success {
+      display: block;
+      background: #e8f7ec;
+      color: #26733b;
+    }
+
+    .vote-message.error {
+      display: block;
+      background: #fff0ed;
+      color: #b33a25;
+    }
+
+    .top10-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+    }
+
+    .top10-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 13px 10px;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .top10-item:last-child {
+      border-bottom: none;
+    }
+
+    .top10-position {
+      font-weight: 700;
+      color: #e99513;
+      min-width: 35px;
+    }
+
+    .top10-title {
+      flex: 1;
+      font-weight: 600;
+      color: #292929;
+    }
+
+    .top10-likes {
+      color: #777;
+      white-space: nowrap;
+    }
+
     @media (max-width: 650px) {
-      .music-container {
+      .music-container,
+      .top10-container {
         margin: 15px;
         padding: 15px;
       }
@@ -85,9 +178,19 @@
         grid-row: 2;
       }
 
-      .music-likes {
+      .music-vote {
         grid-column: 2;
         grid-row: 1;
+        gap: 6px;
+      }
+
+      .vote-button {
+        padding: 7px 9px;
+        font-size: .8rem;
+      }
+
+      .music-likes {
+        font-size: .85rem;
       }
     }
   </style>
@@ -99,6 +202,7 @@
   <h2>Schaakkanaal.nl</h2>
   <div>
     <a href="index.html">Home</a>
+    <a href="#top10">Top 10</a>
     <a href="#nummers">Alle nummers</a>
   </div>
 </nav>
@@ -112,9 +216,22 @@
   <a href="index.html" class="btn">Terug naar de homepage</a>
 </header>
 
+<main class="top10-container" id="top10">
+  <h2>🏆 De populairste nummers</h2>
+  <p>De tien nummers met de meeste stemmen uit de community.</p>
+
+  <div id="top10Status" class="music-status">
+    Top 10 ophalen...
+  </div>
+
+  <ol id="top10List" class="top10-list"></ol>
+</main>
+
 <main class="music-container" id="nummers">
   <h2>🎧 Alle nummers</h2>
   <p>De complete verzameling muziek van Schaakkanaal.</p>
+
+  <div id="voteMessage" class="vote-message"></div>
 
   <div id="musicStatus" class="music-status">
     Muzieknummers ophalen...
@@ -130,6 +247,66 @@
 <script>
 const API = "https://api.schaakkanaal.nl/api";
 
+let voting = false;
+
+function showVoteMessage(message, type) {
+  const element = document.getElementById("voteMessage");
+
+  element.textContent = message;
+  element.className = "vote-message " + type;
+}
+
+async function loadTop10() {
+  const status = document.getElementById("top10Status");
+  const list = document.getElementById("top10List");
+
+  try {
+    const response = await fetch(`${API}/top10`);
+
+    if (!response.ok) {
+      throw new Error("Top 10 ophalen mislukt");
+    }
+
+    const songs = await response.json();
+
+    list.replaceChildren();
+
+    if (songs.length === 0) {
+      status.textContent = "Er zijn nog geen nummers.";
+      return;
+    }
+
+    status.textContent = "";
+
+    songs.forEach((song, index) => {
+      const item = document.createElement("li");
+      item.className = "top10-item";
+
+      const position = document.createElement("span");
+      position.className = "top10-position";
+      position.textContent = "#" + (index + 1);
+
+      const title = document.createElement("span");
+      title.className = "top10-title";
+      title.textContent = song.title;
+
+      const likes = document.createElement("span");
+      likes.className = "top10-likes";
+      likes.textContent = "👍 " + song.likes;
+
+      item.appendChild(position);
+      item.appendChild(title);
+      item.appendChild(likes);
+
+      list.appendChild(item);
+    });
+
+  } catch (error) {
+    status.textContent = "De Top 10 kon niet worden opgehaald.";
+    console.error(error);
+  }
+}
+
 async function loadSongs() {
   const status = document.getElementById("musicStatus");
   const list = document.getElementById("musicList");
@@ -143,6 +320,7 @@ async function loadSongs() {
 
     const songs = await response.json();
 
+    list.replaceChildren();
     status.textContent = songs.length + " nummers gevonden.";
 
     songs.forEach(song => {
@@ -166,13 +344,27 @@ async function loadSongs() {
 
       audio.appendChild(source);
 
-      const likes = document.createElement("div");
+      const voteArea = document.createElement("div");
+      voteArea.className = "music-vote";
+
+      const likes = document.createElement("span");
       likes.className = "music-likes";
-      likes.textContent = "👍 " + song.likes + " likes";
+      likes.textContent = "👍 " + song.likes;
+
+      const voteButton = document.createElement("button");
+      voteButton.className = "vote-button";
+      voteButton.textContent = "👍 Like";
+
+      voteButton.addEventListener("click", () => {
+        voteForSong(song.id);
+      });
+
+      voteArea.appendChild(likes);
+      voteArea.appendChild(voteButton);
 
       row.appendChild(title);
       row.appendChild(audio);
-      row.appendChild(likes);
+      row.appendChild(voteArea);
 
       list.appendChild(row);
     });
@@ -184,7 +376,47 @@ async function loadSongs() {
   }
 }
 
+async function voteForSong(songId) {
+  if (voting) return;
+
+  voting = true;
+
+  try {
+    const response = await fetch(`${API}/vote`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        songId: songId
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Stemmen is niet gelukt.");
+    }
+
+    showVoteMessage(
+      "❤️ Bedankt voor je stem! Je stem is opgeslagen.",
+      "success"
+    );
+
+    await Promise.all([
+      loadSongs(),
+      loadTop10()
+    ]);
+
+  } catch (error) {
+    showVoteMessage(error.message, "error");
+  } finally {
+    voting = false;
+  }
+}
+
 loadSongs();
+loadTop10();
 </script>
 
 </body>
