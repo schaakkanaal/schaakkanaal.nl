@@ -607,7 +607,16 @@ async function loadSongs() {
 
       const title = document.createElement("div");
       title.className = "music-title";
-      title.textContent = "🎵 " + song.title;
+      const songTitle = document.createElement("span");
+songTitle.textContent = "🎵 " + song.title;
+title.appendChild(songTitle);
+
+if (song.artist) {
+  const artist = document.createElement("span");
+  artist.className = "music-artist";
+  artist.textContent = song.artist;
+  title.appendChild(artist);
+}
 
       const audio = document.createElement("audio");
       audio.controls = true;
