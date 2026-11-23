@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -19,12 +18,13 @@
       margin: 25px auto;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
-      gap: 22px;
+      grid-template-columns: minmax(0, 1fr) 300px 300px;
+      gap: 18px;
       align-items: start;
     }
 
     .music-container,
+    .playlist-container,
     .top10-container {
       background: white;
       border-radius: 14px;
@@ -41,6 +41,167 @@
       position: sticky;
       top: 85px;
       border-top: 3px solid #f39c12;
+    }
+
+    .playlist-container {
+      padding: 17px;
+      position: sticky;
+      top: 85px;
+      border-top: 3px solid #2d9cdb;
+      min-width: 0;
+    }
+
+    .playlist-heading {
+      font-size: 1.1rem;
+      margin: 0 0 5px;
+    }
+
+    .playlist-description {
+      font-size: .82rem;
+      color: #777;
+      margin: 0 0 12px;
+    }
+
+    .playlist-dropzone {
+      min-height: 90px;
+      border: 2px dashed #d8e3eb;
+      border-radius: 10px;
+      padding: 8px;
+      transition: background .15s, border-color .15s;
+    }
+
+    .playlist-dropzone.drag-over {
+      background: #eef8ff;
+      border-color: #2d9cdb;
+    }
+
+    .playlist-empty {
+      color: #888;
+      font-size: .85rem;
+      text-align: center;
+      padding: 22px 8px;
+    }
+
+    .playlist-item {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) 28px;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 3px;
+      border-bottom: 1px solid #eee;
+      cursor: grab;
+    }
+
+    .playlist-item:last-child { border-bottom: none; }
+    .playlist-item.dragging { opacity: .4; }
+    .playlist-number { color: #888; font-size: .78rem; }
+
+    .playlist-song-title {
+      font-size: .82rem;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      line-height: 1.3;
+    }
+
+    .playlist-remove {
+      border: 0;
+      background: transparent;
+      color: #999;
+      cursor: pointer;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      width: 27px;
+      height: 27px;
+    }
+
+    .playlist-remove:hover {
+      background: #fff0ed;
+      color: #b33a25;
+    }
+
+    .playlist-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 12px 0 8px;
+    }
+
+    .playlist-controls button,
+    .playlist-mode button {
+      border: 0;
+      border-radius: 8px;
+      background: #eef5fa;
+      color: #31566e;
+      cursor: pointer;
+      padding: 8px 10px;
+      font-size: .9rem;
+    }
+
+    .playlist-controls button:hover,
+    .playlist-mode button:hover {
+      background: #dcecf7;
+    }
+
+    .playlist-controls .playlist-main-button {
+      background: #2d9cdb;
+      color: white;
+      font-weight: 700;
+      min-width: 48px;
+    }
+
+    .playlist-controls .playlist-main-button:hover {
+      background: #2187c2;
+    }
+
+    .playlist-mode {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .playlist-mode button {
+      font-size: .78rem;
+      padding: 6px 9px;
+    }
+
+    .playlist-mode button.active {
+      background: #d9efff;
+      color: #126da3;
+      box-shadow: inset 0 0 0 1px #8bc8ed;
+    }
+
+    .playlist-now-playing {
+      min-height: 18px;
+      margin-top: 10px;
+      color: #666;
+      text-align: center;
+      font-size: .78rem;
+      overflow-wrap: anywhere;
+    }
+
+    .add-to-playlist {
+      border: 0;
+      border-radius: 7px;
+      background: #eaf5fc;
+      color: #1678b5;
+      padding: 7px 9px;
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .add-to-playlist:hover {
+      background: #d5ebf9;
+    }
+
+    .music-row[draggable="true"] {
+      cursor: grab;
+    }
+
+    .music-row.dragging {
+      opacity: .45;
     }
 
     .top10-heading {
@@ -62,7 +223,7 @@
 
     .music-row {
       display: grid;
-      grid-template-columns: minmax(180px, 1fr) minmax(220px, 320px) 150px;
+      grid-template-columns: minmax(150px, 1fr) minmax(180px, 300px) 135px 40px;
       align-items: center;
       gap: 20px;
       padding: 12px 10px;
@@ -204,18 +365,38 @@
       cursor: not-allowed;
     }
 
+    @media (max-width: 1150px) and (min-width: 851px) {
+      .music-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+      }
+
+      .music-container {
+        grid-column: 1 / -1;
+      }
+
+      .playlist-container,
+      .top10-container {
+        position: static;
+      }
+    }
+
     @media (max-width: 850px) {
       .music-layout {
         grid-template-columns: 1fr;
       }
 
-      .top10-container {
+      .playlist-container {
         position: static;
         order: 0;
       }
 
-      .music-container {
+      .top10-container {
+        position: static;
         order: 1;
+      }
+
+      .music-container {
+        order: 2;
       }
 
       .top10-list {
@@ -233,6 +414,7 @@
       }
 
       .music-container,
+      .playlist-container,
       .top10-container {
         padding: 15px;
       }
@@ -257,6 +439,12 @@
         gap: 6px;
       }
 
+      .add-to-playlist {
+        grid-column: 2;
+        grid-row: 3;
+        justify-self: end;
+      }
+
       .vote-button {
         padding: 7px 9px;
         font-size: .8rem;
@@ -279,8 +467,9 @@
   <h2>Schaakkanaal.nl</h2>
   <div>
     <a href="index.html">Home</a>
-    <a href="#top10">Top 10</a>
     <a href="#nummers">Alle nummers</a>
+    <a href="#mijnAfspeellijst">Mijn afspeellijst</a>
+    <a href="#top10">Top 10</a>
   </div>
 </nav>
 
@@ -308,6 +497,31 @@
     <div id="musicList" class="music-list"></div>
   </main>
 
+  <aside class="playlist-container" id="mijnAfspeellijst">
+    <h2 class="playlist-heading">🎶 Mijn afspeellijst</h2>
+    <p class="playlist-description">Sleep nummers hierheen of gebruik ＋</p>
+
+    <div id="playlistDropzone" class="playlist-dropzone">
+      <div id="playlistEmpty" class="playlist-empty">
+        Sleep hier nummers naartoe om je eigen lijst te maken.
+      </div>
+      <ol id="playlistList" class="top10-list"></ol>
+    </div>
+
+    <div class="playlist-controls">
+      <button type="button" id="playlistPrevious" title="Vorig nummer">⏮</button>
+      <button type="button" id="playlistPlay" class="playlist-main-button" title="Afspelen">▶</button>
+      <button type="button" id="playlistNext" title="Volgend nummer">⏭</button>
+    </div>
+
+    <div class="playlist-mode">
+      <button type="button" id="playlistShuffle" aria-pressed="false">🔀 Shuffle uit</button>
+      <button type="button" id="playlistRepeat" aria-pressed="false">🔁 Herhalen uit</button>
+    </div>
+
+    <div id="playlistNowPlaying" class="playlist-now-playing">Nog niets wordt afgespeeld</div>
+  </aside>
+
   <aside class="top10-container" id="top10">
     <h2 class="top10-heading">🏆 Community Top 10</h2>
     <p class="top10-description">De populairste nummers</p>
@@ -324,12 +538,20 @@
 <footer>
   <p>Schaakkanaal.nl • Community Muziek</p>
 </footer>
-
 <script>
 const API = "https://api.schaakkanaal.nl/api";
 
 let voting = false;
 const audioPlayers = new Map();
+let allSongs = [];
+let playlistIds = [];
+let playlistIndex = -1;
+let playlistShuffle = false;
+let playlistRepeat = false;
+let draggedSongId = null;
+let draggedPlaylistIndex = null;
+
+const PLAYLIST_STORAGE_KEY = "schaakkanaal-community-playlist";
 
 function showVoteMessage(message, type) {
   const element = document.getElementById("voteMessage");
@@ -349,6 +571,7 @@ async function loadSongs() {
     }
 
     const songs = await response.json();
+    allSongs = songs;
 
     list.replaceChildren();
     audioPlayers.clear();
@@ -358,6 +581,20 @@ async function loadSongs() {
     songs.forEach(song => {
       const row = document.createElement("div");
       row.className = "music-row";
+      row.draggable = true;
+      row.dataset.songId = String(song.id);
+
+      row.addEventListener("dragstart", event => {
+        draggedSongId = String(song.id);
+        row.classList.add("dragging");
+        event.dataTransfer.effectAllowed = "copy";
+        event.dataTransfer.setData("text/plain", String(song.id));
+      });
+
+      row.addEventListener("dragend", () => {
+        draggedSongId = null;
+        row.classList.remove("dragging");
+      });
 
       const title = document.createElement("div");
       title.className = "music-title";
@@ -377,6 +614,33 @@ async function loadSongs() {
       audio.appendChild(source);
       audioPlayers.set(String(song.id), audio);
 
+      audio.addEventListener("ended", () => {
+        if (
+          playlistIndex >= 0 &&
+          playlistIds[playlistIndex] === String(song.id)
+        ) {
+          playNextPlaylistTrack();
+        }
+      });
+
+      audio.addEventListener("play", () => {
+        if (
+          playlistIndex >= 0 &&
+          playlistIds[playlistIndex] === String(song.id)
+        ) {
+          renderPlaylist();
+        }
+      });
+
+      audio.addEventListener("pause", () => {
+        if (
+          playlistIndex >= 0 &&
+          playlistIds[playlistIndex] === String(song.id)
+        ) {
+          renderPlaylist();
+        }
+      });
+
       const voteArea = document.createElement("div");
       voteArea.className = "music-vote";
 
@@ -395,12 +659,35 @@ async function loadSongs() {
       voteArea.appendChild(likes);
       voteArea.appendChild(voteButton);
 
+      const addButton = document.createElement("button");
+      addButton.className = "add-to-playlist";
+      addButton.type = "button";
+      addButton.textContent = "＋";
+      addButton.title = "Voeg toe aan mijn afspeellijst";
+
+      addButton.addEventListener("click", () => {
+        addToPlaylist(song.id);
+      });
+
       row.appendChild(title);
       row.appendChild(audio);
       row.appendChild(voteArea);
+      row.appendChild(addButton);
 
       list.appendChild(row);
     });
+
+    // Verwijder nummers die niet meer in de muziekbibliotheek staan.
+    const validIds = new Set(
+      allSongs.map(song => String(song.id))
+    );
+
+    playlistIds = playlistIds.filter(id =>
+      validIds.has(String(id))
+    );
+
+    savePlaylist();
+    renderPlaylist();
 
   } catch (error) {
     status.textContent = "Het ophalen van de muziek is niet gelukt.";
@@ -503,6 +790,382 @@ async function loadTop10() {
   }
 }
 
+function savePlaylist() {
+  try {
+    localStorage.setItem(
+      PLAYLIST_STORAGE_KEY,
+      JSON.stringify(playlistIds)
+    );
+  } catch (error) {
+    console.warn(
+      "Afspeellijst kon niet lokaal worden opgeslagen.",
+      error
+    );
+  }
+}
+
+function getPlaylistSongs() {
+  return playlistIds
+    .map(id =>
+      allSongs.find(song => String(song.id) === String(id))
+    )
+    .filter(Boolean);
+}
+
+function addToPlaylist(songId) {
+  const id = String(songId);
+
+  if (playlistIds.includes(id)) {
+    showVoteMessage(
+      "Dit nummer staat al in je afspeellijst.",
+      "error"
+    );
+    return;
+  }
+
+  playlistIds.push(id);
+
+  savePlaylist();
+  renderPlaylist();
+
+  showVoteMessage(
+    "Nummer toegevoegd aan je afspeellijst.",
+    "success"
+  );
+}
+
+function removeFromPlaylist(songId) {
+  const id = String(songId);
+  const removedIndex = playlistIds.indexOf(id);
+
+  if (removedIndex === -1) return;
+
+  playlistIds.splice(removedIndex, 1);
+
+  if (removedIndex < playlistIndex) {
+    playlistIndex--;
+  }
+
+  if (playlistIndex >= playlistIds.length) {
+    playlistIndex = playlistIds.length - 1;
+  }
+
+  if (playlistIds.length === 0) {
+    stopPlaylist();
+  } else {
+    savePlaylist();
+    renderPlaylist();
+  }
+
+  savePlaylist();
+  renderPlaylist();
+}
+  function renderPlaylist() {
+  const list = document.getElementById("playlistList");
+  const empty = document.getElementById("playlistEmpty");
+  const songs = getPlaylistSongs();
+
+  list.replaceChildren();
+  empty.style.display = songs.length ? "none" : "block";
+
+  songs.forEach((song, index) => {
+    const item = document.createElement("li");
+    item.className = "playlist-item";
+    item.draggable = true;
+    item.dataset.index = String(index);
+
+    const number = document.createElement("span");
+    number.className = "playlist-number";
+    number.textContent = String(index + 1) + ".";
+
+    const title = document.createElement("span");
+    title.className = "playlist-song-title";
+    title.textContent = song.title;
+
+    if (index === playlistIndex) {
+      title.style.color = "#1678b5";
+    }
+
+    const remove = document.createElement("button");
+    remove.className = "playlist-remove";
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.title = "Verwijder uit afspeellijst";
+
+    remove.addEventListener("click", () => {
+      removeFromPlaylist(song.id);
+    });
+
+    item.addEventListener("dragstart", event => {
+      draggedPlaylistIndex = index;
+      item.classList.add("dragging");
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData(
+        "text/plain",
+        "playlist:" + index
+      );
+    });
+
+    item.addEventListener("dragend", () => {
+      draggedPlaylistIndex = null;
+      item.classList.remove("dragging");
+    });
+
+    item.addEventListener("dragover", event => {
+      event.preventDefault();
+    });
+
+    item.addEventListener("drop", event => {
+      event.preventDefault();
+
+      if (
+        draggedPlaylistIndex === null ||
+        draggedPlaylistIndex === index
+      ) {
+        return;
+      }
+
+      const moved = playlistIds.splice(
+        draggedPlaylistIndex,
+        1
+      )[0];
+
+      playlistIds.splice(index, 0, moved);
+
+      if (playlistIndex === draggedPlaylistIndex) {
+        playlistIndex = index;
+      } else if (
+        draggedPlaylistIndex < playlistIndex &&
+        index >= playlistIndex
+      ) {
+        playlistIndex--;
+      } else if (
+        draggedPlaylistIndex > playlistIndex &&
+        index <= playlistIndex
+      ) {
+        playlistIndex++;
+      }
+
+      savePlaylist();
+      renderPlaylist();
+    });
+
+    item.append(number, title, remove);
+    list.appendChild(item);
+  });
+
+  document.getElementById("playlistPlay").textContent =
+    playlistIndex >= 0 &&
+    audioPlayers.get(playlistIds[playlistIndex])?.paused === false
+      ? "⏸"
+      : "▶";
+
+  document.getElementById("playlistShuffle")
+    .classList.toggle("active", playlistShuffle);
+
+  document.getElementById("playlistShuffle").textContent =
+    playlistShuffle ? "🔀 Shuffle aan" : "🔀 Shuffle uit";
+
+  document.getElementById("playlistShuffle")
+    .setAttribute("aria-pressed", String(playlistShuffle));
+
+  document.getElementById("playlistRepeat")
+    .classList.toggle("active", playlistRepeat);
+
+  document.getElementById("playlistRepeat").textContent =
+    playlistRepeat ? "🔁 Herhalen aan" : "🔁 Herhalen uit";
+
+  document.getElementById("playlistRepeat")
+    .setAttribute("aria-pressed", String(playlistRepeat));
+}
+
+function pauseOtherPlayers(activePlayer) {
+  audioPlayers.forEach(player => {
+    if (player !== activePlayer) {
+      player.pause();
+    }
+  });
+}
+
+async function playPlaylistIndex(index) {
+  const songs = getPlaylistSongs();
+
+  if (!songs.length) {
+    document.getElementById("playlistNowPlaying").textContent =
+      "Voeg eerst nummers toe aan je lijst";
+    return;
+  }
+
+  if (index < 0 || index >= songs.length) return;
+
+  playlistIndex = index;
+
+  const song = songs[index];
+  const player = audioPlayers.get(String(song.id));
+
+  if (!player) return;
+
+  pauseOtherPlayers(player);
+
+  document.getElementById("playlistNowPlaying").textContent =
+    "▶ " + song.title;
+
+  renderPlaylist();
+
+  try {
+    player.currentTime = 0;
+    await player.play();
+  } catch (error) {
+    document.getElementById("playlistNowPlaying").textContent =
+      "Afspelen is niet gelukt. Druk nogmaals op play.";
+
+    console.error(error);
+  }
+}
+
+function playNextPlaylistTrack() {
+  const songs = getPlaylistSongs();
+
+  if (!songs.length) return;
+
+  if (playlistShuffle && songs.length > 1) {
+    let nextIndex = playlistIndex;
+
+    while (nextIndex === playlistIndex) {
+      nextIndex = Math.floor(Math.random() * songs.length);
+    }
+
+    playPlaylistIndex(nextIndex);
+    return;
+  }
+
+  const nextIndex = playlistIndex + 1;
+
+  if (nextIndex < songs.length) {
+    playPlaylistIndex(nextIndex);
+  } else if (playlistRepeat) {
+    playPlaylistIndex(0);
+  } else {
+    playlistIndex = -1;
+
+    document.getElementById("playlistNowPlaying").textContent =
+      "Afspeellijst afgelopen";
+
+    renderPlaylist();
+  }
+}
+
+function stopPlaylist() {
+  pauseOtherPlayers(null);
+  playlistIndex = -1;
+
+  document.getElementById("playlistNowPlaying").textContent =
+    "Nog niets wordt afgespeeld";
+
+  renderPlaylist();
+}
+
+function setupPlaylist() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(PLAYLIST_STORAGE_KEY) || "[]"
+    );
+
+    if (Array.isArray(saved)) {
+      playlistIds = saved.map(String);
+    }
+  } catch (error) {
+    playlistIds = [];
+  }
+
+  const dropzone = document.getElementById("playlistDropzone");
+
+  dropzone.addEventListener("dragover", event => {
+    event.preventDefault();
+    dropzone.classList.add("drag-over");
+  });
+
+  dropzone.addEventListener("dragleave", event => {
+    if (!dropzone.contains(event.relatedTarget)) {
+      dropzone.classList.remove("drag-over");
+    }
+  });
+
+  dropzone.addEventListener("drop", event => {
+    event.preventDefault();
+    dropzone.classList.remove("drag-over");
+
+    const transfer = event.dataTransfer.getData("text/plain");
+
+    if (transfer.startsWith("playlist:")) {
+      return;
+    }
+
+    const id = draggedSongId || transfer;
+
+    if (id) {
+      addToPlaylist(id);
+    }
+  });
+
+  document.getElementById("playlistPlay")
+    .addEventListener("click", async () => {
+      const songs = getPlaylistSongs();
+
+      if (!songs.length) return;
+
+      const current =
+        playlistIndex >= 0
+          ? audioPlayers.get(playlistIds[playlistIndex])
+          : null;
+
+      if (current && !current.paused) {
+        current.pause();
+        renderPlaylist();
+        return;
+      }
+
+      if (playlistIndex >= 0 && current) {
+        pauseOtherPlayers(current);
+
+        try {
+          await current.play();
+          renderPlaylist();
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        playPlaylistIndex(0);
+      }
+    });
+
+  document.getElementById("playlistPrevious")
+    .addEventListener("click", () => {
+      if (playlistIndex > 0) {
+        playPlaylistIndex(playlistIndex - 1);
+      } else if (playlistRepeat && playlistIds.length) {
+        playPlaylistIndex(playlistIds.length - 1);
+      }
+    });
+
+  document.getElementById("playlistNext")
+    .addEventListener("click", playNextPlaylistTrack);
+
+  document.getElementById("playlistShuffle")
+    .addEventListener("click", () => {
+      playlistShuffle = !playlistShuffle;
+      renderPlaylist();
+    });
+
+  document.getElementById("playlistRepeat")
+    .addEventListener("click", () => {
+      playlistRepeat = !playlistRepeat;
+      renderPlaylist();
+    });
+
+  renderPlaylist();
+}
+
 async function voteForSong(songId) {
   if (voting) return;
 
@@ -522,7 +1185,9 @@ async function voteForSong(songId) {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.error || "Stemmen is niet gelukt.");
+      throw new Error(
+        result.error || "Stemmen is niet gelukt."
+      );
     }
 
     showVoteMessage(
@@ -541,6 +1206,7 @@ async function voteForSong(songId) {
 }
 
 async function initializeMusicPage() {
+  setupPlaylist();
   await loadSongs();
   await loadTop10();
 }
