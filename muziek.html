@@ -25,11 +25,12 @@
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.7s ease;
+  padding: 0 8px;
 }
 
 .music-intro.is-playing .music-chess-visualizer {
@@ -37,39 +38,18 @@
 }
 
 .music-chess-piece {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
   color: #81779a;
-  font-size: clamp(30px, 5vw, 58px);
+  font-size: clamp(12px, 2vw, 30px);
   opacity: 0.45;
-  animation: chessFloat 2.8s ease-in-out infinite alternate;
-  animation-play-state: paused;
+  transform: scaleY(0.3);
+  transform-origin: center;
+  transition: transform 0.08s ease-out;
 }
 
-.music-intro.is-playing .music-chess-piece {
-  animation-play-state: running;
-}
 
-.music-chess-piece:nth-child(even) {
-  animation-delay: -1.4s;
-}
-
-.music-chess-piece:nth-child(3n) {
-  animation-duration: 3.6s;
-}
-
-@keyframes chessFloat {
-  from {
-    transform: translateY(10px) rotate(-5deg);
-  }
-  to {
-    transform: translateY(-10px) rotate(5deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .music-chess-piece {
-    animation: none;
-  }
-}
 
    .music-layout {
   max-width: 1400px;
@@ -541,15 +521,8 @@
 </nav>
 
 <header class="music-intro">
-    <div class="music-chess-visualizer" aria-hidden="true">
-    <span class="music-chess-piece">♟</span>
-    <span class="music-chess-piece">♜</span>
-    <span class="music-chess-piece">♞</span>
-    <span class="music-chess-piece">♝</span>
-    <span class="music-chess-piece">♛</span>
-    <span class="music-chess-piece">♞</span>
-    <span class="music-chess-piece">♜</span>
-  </div>
+<div class="music-chess-visualizer" id="musicChessVisualizer" aria-hidden="true"></div>
+  
   <h1>🎵 Community Muziek</h1>
   <p>
     Meer dan 30 nummers, ontstaan binnen onze eigen community.
@@ -636,7 +609,83 @@ const PLAYLIST_STORAGE_KEY = "schaakkanaal-community-playlist";
 
   intro?.classList.toggle("is-playing", isPlaying);
 }
+const chessPieceSymbols = ["♟", "♜", "♞", "♝", "♛", "♚"];
 
+const visualizerElement = document.getElementById("musicChessVisualizer");
+const visualizerPieces = [];
+
+for (let i = 0; i < 80; i++) {
+  const piece = document.createElement("span");
+  piece.className = "music-chess-piece";
+  piece.textContent = chessPieceSymbols[i % chessPieceSymbols.length];
+
+  visualizerElement.appendChild(piece);
+  visualizerPieces.push(piece);
+}
+
+let audioContext = null;
+let audioAnalyser = null;
+let visualizerAnimation = null;
+
+const connectedAudioPlayers = new WeakSet();
+const frequencyData = new Uint8Array(128);
+
+function connectAudioToVisualizer(audio) {
+  if (!audioContext) {
+    audioContext = new AudioContext();
+    audioAnalyser = audioContext.createAnalyser();
+    audioAnalyser.fftSize = 256;
+    audioAnalyser.smoothingTimeConstant = 0.75;
+    audioAnalyser.connect(audioContext.destination);
+  }
+
+  if (!connectedAudioPlayers.has(audio)) {
+    const source = audioContext.createMediaElementSource(audio);
+    source.connect(audioAnalyser);
+    connectedAudioPlayers.add(audio);
+  }
+
+  audioContext.resume();
+  startChessVisualizer();
+}
+
+function startChessVisualizer() {
+  if (visualizerAnimation) return;
+
+  function animate() {
+    if (!audioAnalyser) return;
+
+    audioAnalyser.getByteFrequencyData(frequencyData);
+
+    visualizerPieces.forEach((piece, index) => {
+      const frequencyIndex = Math.floor(
+        index * frequencyData.length / visualizerPieces.length
+      );
+
+      const intensity = frequencyData[frequencyIndex] / 255;
+      const height = 0.25 + intensity * 2.2;
+
+      piece.style.transform = `scaleY(${height})`;
+    });
+
+    const musicPlaying = Array.from(audioPlayers.values()).some(
+      player => !player.paused && !player.ended
+    );
+
+    if (musicPlaying) {
+      visualizerAnimation = requestAnimationFrame(animate);
+    } else {
+      visualizerPieces.forEach(piece => {
+        piece.style.transform = "scaleY(0.25)";
+      });
+
+      visualizerAnimation = null;
+    }
+  }
+
+  visualizerAnimation = requestAnimationFrame(animate);
+}
+  
 function showVoteMessage(message, type) {
   const element = document.getElementById("voteMessage");
   element.textContent = message;
@@ -719,6 +768,7 @@ if (song.artist) {
 });
 
 audio.addEventListener("play", () => {
+  connectAudioToVisualizer(audio);
   updateMusicVisualizer();
 
   if (
