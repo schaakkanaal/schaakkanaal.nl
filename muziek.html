@@ -614,7 +614,7 @@ const chessPieceSymbols = ["♟", "♜", "♞", "♝", "♛", "♚"];
 const visualizerElement = document.getElementById("musicChessVisualizer");
 const visualizerPieces = [];
 
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 24; i++) {
   const piece = document.createElement("span");
   piece.className = "music-chess-piece";
   piece.textContent = chessPieceSymbols[i % chessPieceSymbols.length];
@@ -635,7 +635,7 @@ function connectAudioToVisualizer(audio) {
     audioContext = new AudioContext();
     audioAnalyser = audioContext.createAnalyser();
     audioAnalyser.fftSize = 256;
-    audioAnalyser.smoothingTimeConstant = 0.75;
+    audioAnalyser.smoothingTimeConstant = 0.55;
     audioAnalyser.connect(audioContext.destination);
   }
 
@@ -661,17 +661,17 @@ function startChessVisualizer() {
   const position = index / (visualizerPieces.length - 1);
 
   const frequencyIndex = Math.floor(
-    1 + Math.pow(position, 1.35) * 95
+    2 + Math.pow(position, 1.15) * 85
   );
 
-  const intensity = Math.min(
-    1,
-    frequencyData[frequencyIndex] / 100
-  );
+  const rawIntensity = frequencyData[frequencyIndex] / 255;
+  const intensity = Math.pow(rawIntensity, 0.55);
 
-  const height = 0.3 + intensity * 1.9;
+  const height = 0.55 + intensity * 2.8;
+  const movement = (0.5 - intensity) * 18;
 
-  piece.style.transform = `scaleY(${height})`;
+  piece.style.transform =
+    `translateY(${movement}px) scaleY(${height})`;
 });
 
     const musicPlaying = Array.from(audioPlayers.values()).some(
