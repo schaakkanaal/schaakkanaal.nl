@@ -108,9 +108,11 @@
     touch-action: none;
 }
 
+
 #board-resize-handle:hover {
     border-color: #c99b55;
-    
+}
+
 /* CommunityBots - botselectie */
 
 .bot-card {
@@ -185,5 +187,4 @@
     margin-top: 16px;
 }
 
-}
 /* Test 91: brede Test 81-verbergregel verwijderd. */
