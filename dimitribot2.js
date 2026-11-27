@@ -205,10 +205,19 @@ function afterHumanMove() {
     if (!isGameOver()) requestBotMove();
 }
 
+async function waitMinimumThinkTime(startTime) {
+    const elapsed = Date.now() - startTime;
+    const remaining = 2000 - elapsed;
+    if (remaining > 0) {
+        await new Promise(resolve => setTimeout(resolve, remaining));
+    }
+}
+
 async function requestBotMove() {
     if (!gameStarted || botThinking || isGameOver() || chess.turn() === playerColor) return;
 
     const requestId = ++botRequestId;
+    const thinkingStartedAt = Date.now();
     const fenAtRequest = chess.fen();
     botThinking = true;
     updateGameStatus();
@@ -221,6 +230,8 @@ async function requestBotMove() {
 
         const bookSan = chooseOpeningBookMove();
         if (bookSan) {
+            await waitMinimumThinkTime(thinkingStartedAt);
+            if (requestId !== botRequestId) return;
             const bookMove = chess.move(bookSan);
             if (bookMove) {
                 playMoveSound(bookMove);
@@ -249,6 +260,7 @@ async function requestBotMove() {
             priorMoves
         });
 
+        await waitMinimumThinkTime(thinkingStartedAt);
         if (requestId !== botRequestId) return;
         if (chess.fen() !== fenAtRequest) throw new Error("De stelling is tijdens het denken gewijzigd; zet niet uitgevoerd.");
 
