@@ -16,6 +16,8 @@ const CHECK_MARKER = { class: "marker-check-glow", slice: "markerSquare" };
 let MAIA_ELO = 1500;
 let gameStarted = false;
 let endSoundPlayed = false;
+let botMateAnimationPlayed = false;
+let botMateOverlay = null;
 const startSound = new Audio(new URL("game-start.mp3", document.baseURI).href);
 const endSound = new Audio(new URL("game-end.mp3", document.baseURI).href);
 const moveSound = new Audio(new URL("move.mp3", document.baseURI).href);
@@ -35,6 +37,77 @@ function playMoveSound(move) {
     else if (move?.flags?.includes("k") || move?.flags?.includes("q")) playSound(castleSound);
     else if (move?.captured) playSound(captureSound);
     else playSound(moveSound);
+}
+
+// Speel deze animatie uitsluitend af wanneer DimitriBot schaakmat is gezet.
+// chess.turn() is na mat de kleur die mat staat; dat is niet de kleur van de speler.
+function showBotMateAnimation() {
+    if (botMateAnimationPlayed) return;
+    botMateAnimationPlayed = true;
+
+    if (!botMateOverlay) {
+        const previousPosition = getComputedStyle(wrap).position;
+        if (previousPosition === "static") wrap.style.position = "relative";
+
+        botMateOverlay = document.createElement("div");
+        botMateOverlay.setAttribute("role", "dialog");
+        botMateOverlay.setAttribute("aria-label", "DimitriBot is schaakmat gezet");
+        Object.assign(botMateOverlay.style, {
+            position: "absolute",
+            inset: "0",
+            zIndex: "100",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "12px",
+            boxSizing: "border-box",
+            background: "rgba(0, 0, 0, 0.82)",
+            borderRadius: "inherit",
+            cursor: "pointer"
+        });
+
+        const video = document.createElement("video");
+        video.src = new URL("Dimitri RLE.webm", document.baseURI).href;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.muted = true;
+        video.preload = "auto";
+        video.loop = false;
+        Object.assign(video.style, {
+            display: "block",
+            maxWidth: "100%",
+            maxHeight: "100%",
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            pointerEvents: "none"
+        });
+
+        botMateOverlay.appendChild(video);
+        wrap.appendChild(botMateOverlay);
+
+        const closeAnimation = () => {
+            if (botMateOverlay) { botMateOverlay.hidden = true; botMateOverlay.style.display = "none"; }
+            video.pause();
+        };
+        botMateOverlay.addEventListener("click", closeAnimation);
+        video.addEventListener("ended", closeAnimation);
+        video.addEventListener("error", () => {
+            console.warn("DimitriBot-matanimatie kon niet worden geladen:", video.src);
+            closeAnimation();
+        });
+    }
+
+    botMateOverlay.hidden = false;
+    botMateOverlay.style.display = "flex";
+    const video = botMateOverlay.querySelector("video");
+    video.currentTime = 0;
+    const playback = video.play();
+    if (playback?.catch) playback.catch(error => {
+        console.warn("DimitriBot-matanimatie kon niet automatisch starten:", error);
+        botMateOverlay.hidden = true;
+        botMateOverlay.style.display = "none";
+    });
 }
 let maia = null;
 let maiaLoadPromise = null;
@@ -148,6 +221,9 @@ function updateGameStatus() {
     }
     if (isGameOver()) {
         if (!endSoundPlayed) { playSound(endSound); endSoundPlayed = true; }
+        if (chess.isCheckmate() && chess.turn() !== playerColor) {
+            showBotMateAnimation();
+        }
         updateStatus();
     } else if (botThinking) {
         status.textContent = "DimitriBot denkt na…";
@@ -440,6 +516,8 @@ function startGame() {
     MAIA_ELO = Number(document.getElementById("botStrength").value) || 1500;
     orientation = playerColor === "w" ? COLOR.white : COLOR.black;
     endSoundPlayed = false;
+    botMateAnimationPlayed = false;
+    if (botMateOverlay) { botMateOverlay.hidden = true; botMateOverlay.style.display = "none"; }
     gameStarted = true;
     chess.reset();
     build();
@@ -459,6 +537,8 @@ function resetToStartingPosition() {
     pendingHumanMove = null;
     gameStarted = false;
     endSoundPlayed = false;
+    botMateAnimationPlayed = false;
+    if (botMateOverlay) { botMateOverlay.hidden = true; botMateOverlay.style.display = "none"; }
     chess.reset();
     orientation = COLOR.white;
     build();
