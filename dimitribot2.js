@@ -454,3 +454,44 @@ el.addEventListener("click", event => {
 const resizeObserver = new ResizeObserver(() => board?.resize());
 resizeObserver.observe(wrap);
 window.addEventListener("resize", () => board?.resize());
+
+// Schaakbord vergroten en verkleinen met het handvat.
+const resizeHandle = document.getElementById("board-resize-handle");
+
+if (resizeHandle) {
+    let startX = 0;
+    let startWidth = 0;
+
+    resizeHandle.addEventListener("pointerdown", event => {
+        event.preventDefault();
+
+        startX = event.clientX;
+        startWidth = wrap.getBoundingClientRect().width;
+
+        resizeHandle.setPointerCapture(event.pointerId);
+    });
+
+    resizeHandle.addEventListener("pointermove", event => {
+        if (!resizeHandle.hasPointerCapture(event.pointerId)) return;
+
+        const difference = event.clientX - startX;
+        const availableWidth = wrap.parentElement.clientWidth;
+
+        const newSize = Math.max(
+            240,
+            Math.min(startWidth + difference, availableWidth)
+        );
+
+        wrap.style.width = `${newSize}px`;
+        wrap.style.height = `${newSize}px`;
+
+        board?.resize();
+    });
+
+    resizeHandle.addEventListener("pointerup", event => {
+        if (resizeHandle.hasPointerCapture(event.pointerId)) {
+            resizeHandle.releasePointerCapture(event.pointerId);
+        }
+    });
+}
+
