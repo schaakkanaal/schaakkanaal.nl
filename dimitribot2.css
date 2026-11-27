@@ -87,5 +87,28 @@
     fill-opacity: 0 !important;
     stroke: transparent !important;
 }
+/* Vrij schaalbaar schaakbord */
+#board-wrap {
+    position: relative;
+    resize: none;
+    overflow: visible;
+}
 
+#board-resize-handle {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 18px;
+    height: 18px;
+    cursor: nwse-resize;
+    z-index: 20;
+    border-right: 3px solid rgba(120, 120, 120, 0.7);
+    border-bottom: 3px solid rgba(120, 120, 120, 0.7);
+    border-radius: 0 0 3px 0;
+    touch-action: none;
+}
+
+#board-resize-handle:hover {
+    border-color: #c99b55;
+}
 /* Test 91: brede Test 81-verbergregel verwijderd. */
