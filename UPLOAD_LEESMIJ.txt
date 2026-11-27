@@ -1,0 +1,21 @@
+DIMITRIBOT 2.0 – ONLINE UPLOAD
+
+Upload de bestanden in deze map naar dezelfde GitHub-map waarin de huidige
+/dimitribot.html staat.
+
+Bestanden:
+- dimitribot.html       (vervangt de huidige live HTML-pagina)
+- dimitribot2.js        (nieuwe Maia-enginekoppeling)
+- dimitribot2.css       (bestaande Test 99 vormgeving)
+- openingbook.json      (persoonlijk openingsboek; ongewijzigd)
+- pieces/               (alle schaakstukbestanden)
+
+Maak bij voorkeur eerst via GitHub een kopie van de huidige dimitribot.html
+als backup. De oude Stockfish API is niet meer nodig voor deze pagina.
+
+Na upload: open https://schaakkanaal.nl/dimitribot.html en test in een
+incognitovenster of met een harde refresh. Controleer de browserconsole.
+De eerste zet buiten het openingsboek start de Maia-download.
+
+Deze uploadset bevat alleen bestanden die de browserpagina nodig heeft.
+De Python/Stockfish-backendbestanden zijn bewust niet opgenomen.
